@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="388.0" prefWidth="478.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="388.0" prefWidth="478.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pbl4_remote_desktopclient.RemoteDesktop">
    <children>
       <SplitPane dividerPositions="0.5" prefHeight="388.0" prefWidth="479.0">
          <items>
@@ -80,17 +80,17 @@
                         <Insets left="12.0" top="4.0" />
                      </VBox.margin>
                   </ChoiceBox>
-                  <RadioButton mnemonicParsing="false" text="Remote Desktop">
+                  <RadioButton fx:id="radioRemoteDesktop" mnemonicParsing="false" text="Remote Desktop">
                      <VBox.margin>
                         <Insets left="12.0" top="12.0" />
                      </VBox.margin>
                   </RadioButton>
-                  <RadioButton mnemonicParsing="false" text="Transfer File">
+                  <RadioButton fx:id="radioTransferFile" mnemonicParsing="false" text="Transfer File">
                      <VBox.margin>
                         <Insets left="12.0" top="6.0" />
                      </VBox.margin>
                   </RadioButton>
-                  <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Connect">
+                  <Button fx:id="btnConnect" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Connect">
                      <VBox.margin>
                         <Insets left="12.0" top="20.0" />
                      </VBox.margin>
