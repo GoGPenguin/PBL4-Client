@@ -9,7 +9,7 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="508.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pbl4_remote_desktopclient.TransferFileController">
     <children>
         <Label fx:id="labelYourID" layoutX="21.0" layoutY="19.0" prefHeight="17.0" prefWidth="54.0" text="Your ID:" />
-        <TextField fx:id="tfYourID" editable="false" layoutX="82.0" layoutY="15.0" prefHeight="25.0" prefWidth="116.0" promptText="Your ID" />
+        <TextField fx:id="tfYourID" promptText="Your ID" editable="false" layoutX="82.0" layoutY="15.0" prefHeight="25.0" prefWidth="116.0" />
         <Label fx:id="labelYourPassword" layoutX="239.0" layoutY="19.0" text="Your Password:" />
         <TextField fx:id="tfYourPassword" editable="false" layoutX="339.0" layoutY="15.0" prefHeight="25.0" prefWidth="103.0" />
         <Label fx:id="labelYourFile" layoutX="22.0" layoutY="83.0" text="Your files:" />
@@ -25,6 +25,6 @@
       <TextField fx:id="tfPartnerID" editable="false" layoutX="82.0" layoutY="52.0" prefHeight="25.0" prefWidth="116.0" />
       <Label fx:id="labelPartnerPassword" layoutX="239.0" layoutY="56.0" prefHeight="17.0" prefWidth="97.0" text="Partner Password:" />
       <TextField fx:id="tfPartnerPassword" editable="false" layoutX="339.0" layoutY="52.0" prefHeight="25.0" prefWidth="103.0" />
-      <Button fx:id="btnConnect" layoutX="452.0" layoutY="52.0" mnemonicParsing="false" onMouseClicked="#handleClickConnect" prefHeight="25.0" prefWidth="80.0" text="Connect" />
+      <Button fx:id="btnConnect" layoutX="452.0" layoutY="52.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Connect" />
     </children>
 </Pane>
