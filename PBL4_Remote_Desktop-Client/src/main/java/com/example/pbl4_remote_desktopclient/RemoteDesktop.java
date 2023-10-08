@@ -1,0 +1,113 @@
+package com.example.pbl4_remote_desktopclient;
+
+
+import javafx.fxml.FXML;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
+
+import java.io.*;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+public class RemoteDesktop  {
+    @FXML
+    private TextField localIp;
+
+    @FXML
+    private TextField localPwd;
+
+    @FXML
+    private TextField remoteIp;
+
+    @FXML
+    private PasswordField remotePwd;
+
+    private Socket socketClient = null;
+
+    private DataOutputStream out;
+
+    private DataInputStream in;
+
+    private String message ="";
+
+    public void setSocketClient(Socket socketClient, DataOutputStream out, DataInputStream in) {
+        this.socketClient = socketClient;
+        this.in = in;
+        this.out = out;
+        Init();
+    }
+
+    public void setValue(String pwd)
+    {
+        try {
+            // Lấy địa chỉ IP của máy
+            String ipAddress = InetAddress.getLocalHost().getHostAddress();
+
+            // Đặt giá trị của tfYourID bằng địa chỉ IP
+            localIp.setText(ipAddress);
+
+            //Password default
+            localPwd.setText(pwd);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void Init() {
+
+        // Tạo một luồng để gửi tin nhắn
+//        Thread senderThread = new Thread(() -> {
+//            try {
+//                while (true) {
+//                    if (!message.isEmpty()) {
+//                        out.writeUTF(message);
+//                        out.flush();
+//                    }
+//                }
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
+
+        // Tạo một luồng để nhận tin nhắn
+        Thread receiverThread = new Thread(() -> {
+            try {
+                while (true) {
+                    message = in.readUTF();
+                    System.out.println(message);
+                    //Class xử lý tin nhắn
+                    MessageHandler msg = new MessageHandler(message);
+                    String data = msg.getData();
+                    if (!data.equals("True") && !data.equals("False") && !message.isEmpty()) {
+                        data = data.equals(localPwd.getText()) ? "True" : "False";
+                        message = msg.getReceiver() + "," + msg.getStatus() + "," + data;
+                    }
+                    //True thì ngắt kết nối với server tổng, kết nối sang máy remote
+                    else if(data.equals("True")) {
+                        break;
+                    }
+                    else {
+                        message = "";
+                    }
+                    out.writeUTF(message);
+                    out.flush();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        receiverThread.start();
+    }
+    public void connectBtn(MouseEvent mouseEvent) {
+        try {
+            out.writeUTF(remoteIp.getText() + ",abc,"+ remotePwd.getText());
+            out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
+
