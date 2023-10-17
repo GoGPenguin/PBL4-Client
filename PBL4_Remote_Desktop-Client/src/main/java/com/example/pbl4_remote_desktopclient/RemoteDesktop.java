@@ -1,12 +1,18 @@
 package com.example.pbl4_remote_desktopclient;
 
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-
-import java.io.*;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -83,9 +89,30 @@ public class RemoteDesktop  {
                     if (!data.equals("True") && !data.equals("False") && !message.isEmpty()) {
                         data = data.equals(localPwd.getText()) ? "True" : "False";
                         message = msg.getReceiver() + "," + msg.getStatus() + "," + data;
+                        if (data.equals("True")) {
+                            new Sub_Server();
+                        }
                     }
-                    //True thì ngắt kết nối với server tổng, kết nối sang máy remote
+                    //True thì tạo luồng khác để remote
                     else if(data.equals("True")) {
+                        Platform.runLater(() -> {
+                            Stage remoteStage = new Stage();
+                            FXMLLoader remoteLoader = new FXMLLoader(getClass().getResource("RemoteWindow.fxml"));
+                            Pane remoteRoot = null;
+                            try {
+                                remoteRoot = remoteLoader.load();
+                            }
+                            catch (IOException e) {
+                                throw  new RuntimeException();
+                            }
+                            Scene remoteScene = new Scene(remoteRoot);
+                            remoteStage.setScene(remoteScene);
+                            remoteStage.setFullScreen(true);
+                            remoteStage.show();
+                            RemoteWindow remoteController = remoteLoader.getController();
+                            remoteController.getIp(remoteIp.getText(), remoteScene);
+                            remoteController.start();
+                        });
                         break;
                     }
                     else {
