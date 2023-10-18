@@ -10,6 +10,7 @@ module com.example.pbl4_remote_desktopclient {
     requires org.kordamp.bootstrapfx.core;
 //    requires eu.hansolo.tilesfx;
     requires java.logging;
+    requires java.desktop;
 
     opens com.example.pbl4_remote_desktopclient to javafx.fxml;
     exports com.example.pbl4_remote_desktopclient;

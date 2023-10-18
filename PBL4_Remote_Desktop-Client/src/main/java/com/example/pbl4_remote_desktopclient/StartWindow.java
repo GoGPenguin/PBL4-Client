@@ -53,8 +53,9 @@ public class StartWindow extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(StartWindow.class.getResource("StartWindow.fxml"));
             Pane pane = fxmlLoader.load();
 
+            Sub_Server sub_server = new Sub_Server();
             StartWindowController controller = fxmlLoader.getController();
-            controller.setClientSocket(client, in, out);
+            controller.setClientSocket(client, in, out, sub_server);
             Scene scene = new Scene(pane);
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setScene(scene);

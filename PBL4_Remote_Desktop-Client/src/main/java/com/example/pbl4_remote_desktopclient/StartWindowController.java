@@ -23,9 +23,10 @@ public class StartWindowController implements Initializable {
 
     private DataOutputStream out;
 
+    private Sub_Server sub_server = null;
 
-
-    public void  setClientSocket(Socket clientSocket, DataInputStream in, DataOutputStream out) {
+    public void  setClientSocket(Socket clientSocket, DataInputStream in, DataOutputStream out, Sub_Server sub_server) {
+        this.sub_server = sub_server;
         this.clientSocket = clientSocket;
         this.in = in;
         this.out = out;
@@ -55,7 +56,7 @@ public class StartWindowController implements Initializable {
             RemoteDesktop controller = loader.getController();
             String pwd = randomNumber();
             controller.setValue(pwd);
-            controller.setSocketClient(clientSocket, out, in);
+            controller.setSocketClient(clientSocket, out, in, sub_server);
         } catch (IOException e) {
             e.printStackTrace();
         }
