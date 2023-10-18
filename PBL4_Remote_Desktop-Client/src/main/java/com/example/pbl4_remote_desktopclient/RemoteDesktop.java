@@ -24,6 +24,7 @@ public class RemoteDesktop  {
     @FXML
     private TextField localPwd;
 
+    private Sub_Server sub_server = null;
     @FXML
     private TextField remoteIp;
 
@@ -38,7 +39,8 @@ public class RemoteDesktop  {
 
     private String message ="";
 
-    public void setSocketClient(Socket socketClient, DataOutputStream out, DataInputStream in) {
+    public void setSocketClient(Socket socketClient, DataOutputStream out, DataInputStream in, Sub_Server sub_server) {
+        this.sub_server = sub_server;
         this.socketClient = socketClient;
         this.in = in;
         this.out = out;
@@ -90,7 +92,14 @@ public class RemoteDesktop  {
                         data = data.equals(localPwd.getText()) ? "True" : "False";
                         message = msg.getReceiver() + "," + msg.getStatus() + "," + data;
                         if (data.equals("True")) {
-                            new Sub_Server();
+                            out.writeUTF(message);
+                            out.flush();
+                            System.out.println("Here");
+                            //sub_server.getControl(SubServerController.REMOTE_DESKTOP.getControl());
+                        }
+                        else {
+                            out.writeUTF(message);
+                            out.flush();
                         }
                     }
                     //True thì tạo luồng khác để remote
@@ -113,13 +122,15 @@ public class RemoteDesktop  {
                             remoteController.getIp(remoteIp.getText(), remoteScene);
                             remoteController.start();
                         });
-                        break;
+                        message = "";
+                        out.writeUTF(message);
+                        out.flush();
                     }
                     else {
                         message = "";
+                        out.writeUTF(message);
+                        out.flush();
                     }
-                    out.writeUTF(message);
-                    out.flush();
                 }
             } catch (IOException e) {
                 e.printStackTrace();

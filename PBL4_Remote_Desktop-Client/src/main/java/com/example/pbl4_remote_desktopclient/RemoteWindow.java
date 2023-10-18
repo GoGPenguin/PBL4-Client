@@ -5,6 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Socket;
@@ -27,6 +28,9 @@ public class RemoteWindow extends Thread{
         Socket socket = null;
         try {
             socket = new Socket(ip, 6004);
+            DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+            out.writeUTF("1");
+            out.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
