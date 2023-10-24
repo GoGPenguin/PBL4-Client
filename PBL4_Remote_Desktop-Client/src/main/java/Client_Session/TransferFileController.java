@@ -1,4 +1,4 @@
-package com.example.pbl4_remote_desktopclient;
+package Client_Session;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

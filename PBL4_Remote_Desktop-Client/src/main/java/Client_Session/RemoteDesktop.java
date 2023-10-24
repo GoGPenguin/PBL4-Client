@@ -1,6 +1,7 @@
-package com.example.pbl4_remote_desktopclient;
+package Client_Session;
 
 
+import Sub_Server_Session.Sub_Server;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -94,8 +95,6 @@ public class RemoteDesktop  {
                         if (data.equals("True")) {
                             out.writeUTF(message);
                             out.flush();
-                            System.out.println("Here");
-                            //sub_server.getControl(SubServerController.REMOTE_DESKTOP.getControl());
                         }
                         else {
                             out.writeUTF(message);

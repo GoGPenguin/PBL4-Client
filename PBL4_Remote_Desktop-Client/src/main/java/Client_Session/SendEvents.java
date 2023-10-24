@@ -1,4 +1,4 @@
-package com.example.pbl4_remote_desktopclient;
+package Client_Session;
 
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -23,8 +23,8 @@ public class SendEvents {
         this.cPane = p;
         this.width = width;
         this.height = height;
-        this.w = Double.parseDouble(width);
-        this.h = Double.parseDouble(height);
+        this.w = Double.valueOf(width.trim()).doubleValue();
+        this.h = Double.valueOf(height.trim()).doubleValue();
         this.scene = scene;
         try {
             writer = new PrintWriter(socketClient.getOutputStream());
@@ -85,8 +85,8 @@ public class SendEvents {
 
         cPane.setOnMouseDragged(event -> {
             // Handle mouse drag events
-            double xScale = w / cPane.getWidth();
-            double yScale = h / cPane.getHeight();
+            double xScale =  w / cPane.getWidth();
+            double yScale =  h / cPane.getHeight();
 
             writer.println(Commands.DRAG_MOUSE.getAbbrev());
             writer.println((int) (event.getX() * xScale));

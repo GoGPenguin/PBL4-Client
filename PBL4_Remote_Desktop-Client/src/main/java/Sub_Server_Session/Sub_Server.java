@@ -1,4 +1,4 @@
-package com.example.pbl4_remote_desktopclient;
+package Sub_Server_Session;
 
 import java.awt.*;
 import java.io.DataInputStream;
@@ -13,10 +13,11 @@ public class Sub_Server extends Thread{
     private Socket clientSocket = null;
     private boolean initialized = false;
 
+    Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     private ServerSocket serverSocket = null;
     private final int port = 6004;
-    private double clientWidthCm = 34.0;
-    private double clientHeightCm = 19.0;
+    private double clientWidthCm = dim.getWidth();
+    private double clientHeightCm = dim.getHeight();
     private int clientWidthPixels = 1920;
     private int clientHeightPixels = 1080;
     private double pixelsPerCmWidth = clientWidthPixels / clientWidthCm;
@@ -36,7 +37,12 @@ public class Sub_Server extends Thread{
                 Socket clientSocket = serverSocket.accept();
                 DataInputStream in = new DataInputStream(clientSocket.getInputStream());
                 String opt = in.readUTF();
-                new Sub_ClientHandler(clientSocket, robot, pixelsPerCmWidth, pixelsPerCmHeight, opt).start();
+                DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
+                out.writeUTF(String.valueOf(clientWidthCm));
+                out.flush();
+                out.writeUTF(String.valueOf(clientHeightCm));
+                out.flush();
+                new Sub_ClientHandler(clientSocket, robot, opt).start();
             }
         } catch (IOException | AWTException e) {
             e.printStackTrace();

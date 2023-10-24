@@ -1,4 +1,4 @@
-package com.example.pbl4_remote_desktopclient;
+package Client_Session;
 
 import javafx.application.Platform;
 import javafx.scene.image.Image;

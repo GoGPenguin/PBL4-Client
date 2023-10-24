@@ -1,4 +1,4 @@
-package com.example.pbl4_remote_desktopclient;
+package Client_Session;
 
 public class MessageHandler {
     private String receiver;

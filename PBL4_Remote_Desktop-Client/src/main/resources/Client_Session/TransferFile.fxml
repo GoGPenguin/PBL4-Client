@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="508.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pbl4_remote_desktopclient.TransferFileController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="508.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client_Session.TransferFileController">
     <children>
         <Label fx:id="labelYourID" layoutX="21.0" layoutY="19.0" prefHeight="17.0" prefWidth="54.0" text="Your ID:" />
         <TextField fx:id="tfYourID" promptText="Your ID" editable="false" layoutX="82.0" layoutY="15.0" prefHeight="25.0" prefWidth="116.0" />

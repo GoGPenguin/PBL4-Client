@@ -1,10 +1,11 @@
-package com.example.pbl4_remote_desktopclient;
+package Client_Session;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,10 @@ public class RemoteWindow extends Thread{
     @FXML
     private ImageView imageView;
     private String ip;
+
+    private String width;
+
+    private String height;
 
     public void getIp(String ip, Scene scene) {
         this.ip = ip;
@@ -31,6 +36,13 @@ public class RemoteWindow extends Thread{
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
             out.writeUTF("1");
             out.flush();
+            DataInputStream initSize = new DataInputStream(socket.getInputStream());
+            width = initSize.readUTF();
+            height = initSize.readUTF();
+            borderPane.setMinWidth(Double.parseDouble(width));
+            borderPane.setMaxWidth(Double.parseDouble(width));
+            borderPane.setMinHeight(Double.parseDouble(height));
+            borderPane.setMaxHeight(Double.parseDouble(height));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -42,6 +54,6 @@ public class RemoteWindow extends Thread{
         }
 
         new ReceivingScreen(in, imageView);
-        new SendEvents(socket, borderPane, "1920", "1280", scene);
+        new SendEvents(socket, borderPane, width, height, scene);
     }
 }

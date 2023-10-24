@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="510.0" prefWidth="736.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pbl4_remote_desktopclient.StartWindowController">
+<BorderPane prefHeight="510.0" prefWidth="736.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Client_Session.StartWindowController">
    <top>
       <Pane prefHeight="41.0" prefWidth="600.0" style="-fx-background-color: #0064c8;" BorderPane.alignment="CENTER">
          <children>

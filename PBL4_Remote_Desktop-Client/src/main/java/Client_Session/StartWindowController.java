@@ -1,6 +1,7 @@
-package com.example.pbl4_remote_desktopclient;
+package Client_Session;
 
 
+import Sub_Server_Session.Sub_Server;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;

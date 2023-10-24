@@ -1,4 +1,4 @@
-package com.example.pbl4_remote_desktopclient;
+package Sub_Server_Session;
 
 import java.awt.*;
 import java.net.Socket;
@@ -6,17 +6,13 @@ import java.net.Socket;
 public class Sub_ClientHandler extends Thread{
     private Socket clientSocket;
     private Robot robot;
-    private double pixelsPerCmWidth;
-    private double pixelsPerCmHeight;
 
     private String opt = "";
 
-    public Sub_ClientHandler(Socket clientSocket, Robot robot, double pixelsPerCmWidth, double pixelsPerCmHeight, String opt) {
+    public Sub_ClientHandler(Socket clientSocket, Robot robot, String opt) {
         this.opt = opt;
         this.clientSocket = clientSocket;
         this.robot = robot;
-        this.pixelsPerCmWidth = pixelsPerCmWidth;
-        this.pixelsPerCmHeight = pixelsPerCmHeight;
     }
 
     @Override
@@ -43,10 +39,10 @@ public class Sub_ClientHandler extends Thread{
         //waitToConnect();
         try {
             Thread thread = new Thread(() -> {
-                new SendScreen(robot, clientSocket, pixelsPerCmWidth, pixelsPerCmHeight);
+                new SendScreen(robot, clientSocket);
             });
             thread.start();
-            new ReceiveEvents(clientSocket, robot);
+            new ReceivingEvents(clientSocket, robot);
         }
         catch (Exception e) {
             e.printStackTrace();

@@ -1,4 +1,4 @@
-package com.example.pbl4_remote_desktopclient;
+package Sub_Server_Session;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
 
-public class ReceiveEvents extends Thread {
+public class ReceivingEvents extends Thread {
     Socket socket = null;
     Robot robot = null;
     boolean continueLoop = true;
 
-    public ReceiveEvents(Socket socket, Robot robot) {
+    public ReceivingEvents(Socket socket, Robot robot) {
         this.socket = socket;
         this.robot = robot;
         start();
