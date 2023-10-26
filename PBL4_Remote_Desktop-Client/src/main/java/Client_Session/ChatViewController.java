@@ -60,10 +60,10 @@ public class ChatViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         new Thread(() -> {
-//            try{
-////                tao server để client có thể chat
-//                server = new ServerChatPage(new ServerSocket(8082));
-//                System.out.println("Đã tạo server thành công");
+            try{
+//                tao server để client có thể chat
+                server = new ServerChatPage(new ServerSocket(8082));
+                System.out.println("Đã tạo server thành công");
                 if("server".equals(this.Role))
                 {
                     vbox_messages.heightProperty().addListener(new ChangeListener<Number>() {
@@ -162,11 +162,11 @@ public class ChatViewController implements Initializable {
                     });
                 }
 
-//            }
-//            catch(IOException e)
-//            {
-//                e.printStackTrace();
-//            }
+            }
+            catch(IOException e)
+            {
+                e.printStackTrace();
+            }
         }).start();
 
 
