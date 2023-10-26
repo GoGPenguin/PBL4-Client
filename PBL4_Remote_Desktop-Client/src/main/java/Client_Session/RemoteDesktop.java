@@ -66,19 +66,6 @@ public class RemoteDesktop  {
 
     private void Init() {
 
-        // Tạo một luồng để gửi tin nhắn
-//        Thread senderThread = new Thread(() -> {
-//            try {
-//                while (true) {
-//                    if (!message.isEmpty()) {
-//                        out.writeUTF(message);
-//                        out.flush();
-//                    }
-//                }
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        });
 
         // Tạo một luồng để nhận tin nhắn
         Thread receiverThread = new Thread(() -> {
@@ -147,4 +134,3 @@ public class RemoteDesktop  {
         }
     }
 }
-

@@ -1,7 +1,5 @@
 package Client_Session;
 
-import javafx.scene.layout.VBox;
-
 import java.io.*;
 import java.net.Socket;
 
@@ -48,23 +46,23 @@ public class ClientChatPage {
             closeEverything(socket,bufferedReader,bufferedWriter);
         }
     }
-    public void receiveMessageFromServer(VBox vBox)
-    {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(socket.isConnected())
-                {
-                    try {
-                        String msg = bufferedReader.readLine();
-                        ChatViewController.addLabelForClient(msg,vBox);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        closeEverything(socket,bufferedReader,bufferedWriter);
-                    }
-
-                }
-            }
-        }).start();
-    }
+//    public void receiveMessageFromServer(VBox vBox)
+//    {
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while(socket.isConnected())
+//                {
+//                    try {
+//                        String msg = bufferedReader.readLine();
+//                        ChatViewController.addLabelForClient(msg,vBox);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                        closeEverything(socket,bufferedReader,bufferedWriter);
+//                    }
+//
+//                }
+//            }
+//        }).start();
+//    }
 }

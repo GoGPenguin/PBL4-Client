@@ -1,5 +1,4 @@
 package Client_Session;
-import javafx.scene.layout.VBox;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -27,9 +26,9 @@ public class ServerChatPage {
    public void sendMessageToClient(String messageToClient)
    {
        try{
-           bufferedWriter.write(messageToClient);
-           bufferedWriter.newLine();
-           bufferedWriter.flush();
+           DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+           DataInputStream in = new DataInputStream(socket.getInputStream());
+
        }
        catch (IOException e)
        {
@@ -49,22 +48,22 @@ public class ServerChatPage {
            e.printStackTrace();
        }
    }
-   public void receiveMessageFromClient(VBox vBox)
-   {
-       new Thread(new Runnable() {
-           @Override
-           public void run() {
-               while(socket.isConnected())
-               {
-                   try {
-                       String msg = bufferedReader.readLine();
-                       ChatViewController.addLabelForServer(msg,vBox);
-                   } catch (IOException e) {
-                       throw new RuntimeException(e);
-                   }
-
-               }
-           }
-       }).start();
-   }
+//   public void receiveMessageFromClient(VBox vBox)
+//   {
+//       new Thread(new Runnable() {
+//           @Override
+//           public void run() {
+//               while(socket.isConnected())
+//               {
+//                   try {
+//                       String msg = bufferedReader.readLine();
+//                       ChatViewController.addLabelForServer(msg,vBox);
+//                   } catch (IOException e) {
+//                       throw new RuntimeException(e);
+//                   }
+//
+//               }
+//           }
+//       }).start();
+//   }
 }
