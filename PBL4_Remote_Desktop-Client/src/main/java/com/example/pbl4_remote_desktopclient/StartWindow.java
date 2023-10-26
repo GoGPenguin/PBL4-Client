@@ -20,11 +20,13 @@ public class StartWindow extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        String ip = "192.168.1.14";
+
+        String ip = "192.168.35.75";
         int port = 6003;
         int maxAttempts = 10; // Maximum number of connection attempts
 
-        boolean connected = false;
+        // test
+        boolean connected = true;
         Socket client = null;
         DataInputStream in = null;
         DataOutputStream out = null;
@@ -52,7 +54,6 @@ public class StartWindow extends Application {
         if (connected) {
             FXMLLoader fxmlLoader = new FXMLLoader(StartWindow.class.getResource("StartWindow.fxml"));
             Pane pane = fxmlLoader.load();
-
             Sub_Server sub_server = new Sub_Server();
             StartWindowController controller = fxmlLoader.getController();
             controller.setClientSocket(client, in, out, sub_server);

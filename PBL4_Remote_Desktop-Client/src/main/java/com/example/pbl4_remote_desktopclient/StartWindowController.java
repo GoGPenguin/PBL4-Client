@@ -63,7 +63,16 @@ public class StartWindowController implements Initializable {
     }
 
     public void ChatPage(MouseEvent mouseEvent) {
-        loadContent("Chat.fxml");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Chat.fxml"));
+            Node content = loader.load();
+            contentArea.getChildren().setAll(content);
+            ChatViewController controllerChat = loader.getController();
+            controllerChat.setValue();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     public void handleClickTransFile(MouseEvent event) {
 
@@ -73,6 +82,7 @@ public class StartWindowController implements Initializable {
             contentArea.getChildren().setAll(content);
             TransferFileController controller = loader.getController();
             controller.setValue();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

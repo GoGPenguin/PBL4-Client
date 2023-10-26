@@ -9,22 +9,22 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="508.0" prefWidth="545.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.pbl4_remote_desktopclient.TransferFileController">
     <children>
         <Label fx:id="labelYourID" layoutX="21.0" layoutY="19.0" prefHeight="17.0" prefWidth="54.0" text="Your ID:" />
-        <TextField fx:id="tfYourID" promptText="Your ID" editable="false" layoutX="82.0" layoutY="15.0" prefHeight="25.0" prefWidth="116.0" />
+        <TextField fx:id="tfYourID" editable="false" layoutX="82.0" layoutY="15.0" prefHeight="25.0" prefWidth="116.0" promptText="Your ID" />
         <Label fx:id="labelYourPassword" layoutX="239.0" layoutY="19.0" text="Your Password:" />
         <TextField fx:id="tfYourPassword" editable="false" layoutX="339.0" layoutY="15.0" prefHeight="25.0" prefWidth="103.0" />
         <Label fx:id="labelYourFile" layoutX="22.0" layoutY="83.0" text="Your files:" />
         <Label fx:id="labelPartnerFile" layoutX="254.0" layoutY="83.0" text="Partner files:" />
         <TextArea fx:id="taYourFile" layoutX="21.0" layoutY="110.0" prefHeight="251.0" prefWidth="197.0" />
         <TextArea fx:id="taYourPartner" layoutX="255.0" layoutY="110.0" prefHeight="251.0" prefWidth="197.0" />
-        <Button fx:id="btnOpenFile" layoutX="21.0" layoutY="370.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="197.0" text="Open a file" />
+        <Button fx:id="btnOpenFile" layoutX="21.0" layoutY="370.0" mnemonicParsing="false" onMouseClicked="#handleClickOpenFile" prefHeight="25.0" prefWidth="197.0" text="Open a file" />
         <Button fx:id="btnRemoveFile" layoutX="21.0" layoutY="407.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="197.0" text="Remove these files" />
         <Button fx:id="btnSlowDownload" layoutX="255.0" layoutY="370.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="197.0" text="Slow download" />
         <Button fx:id="btnMediumDownload" layoutX="255.0" layoutY="407.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="197.0" text="Medium download" />
         <Button fx:id="btnFastDownload" layoutX="255.0" layoutY="444.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="197.0" text="Fast download" />
       <Label fx:id="labelPartnerID" layoutX="21.0" layoutY="56.0" prefHeight="17.0" prefWidth="65.0" text="Partner ID:" />
-      <TextField fx:id="tfPartnerID" editable="false" layoutX="82.0" layoutY="52.0" prefHeight="25.0" prefWidth="116.0" />
+      <TextField fx:id="tfPartnerID" editable="true" layoutX="82.0" layoutY="52.0" prefHeight="25.0" prefWidth="116.0" />
       <Label fx:id="labelPartnerPassword" layoutX="239.0" layoutY="56.0" prefHeight="17.0" prefWidth="97.0" text="Partner Password:" />
-      <TextField fx:id="tfPartnerPassword" editable="false" layoutX="339.0" layoutY="52.0" prefHeight="25.0" prefWidth="103.0" />
-      <Button fx:id="btnConnect" layoutX="452.0" layoutY="52.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Connect" />
+      <TextField fx:id="tfPartnerPassword" editable="true" layoutX="339.0" layoutY="52.0" prefHeight="25.0" prefWidth="103.0" />
+      <Button fx:id="btnConnect" layoutX="452.0" layoutY="52.0" mnemonicParsing="false" onMouseClicked="#handleClickConnect" prefHeight="25.0" prefWidth="80.0" text="Connect" />
     </children>
 </Pane>
