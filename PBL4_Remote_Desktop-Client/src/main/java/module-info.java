@@ -12,6 +12,8 @@ module com.example.pbl4_remote_desktopclient {
     requires java.logging;
     requires java.desktop;
 
-    opens com.example.pbl4_remote_desktopclient to javafx.fxml;
-    exports com.example.pbl4_remote_desktopclient;
+    opens Client_Session to javafx.fxml;
+    exports Client_Session;
+    exports Sub_Server_Session;
+    opens Sub_Server_Session to javafx.fxml;
 }
