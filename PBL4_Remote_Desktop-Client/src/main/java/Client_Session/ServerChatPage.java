@@ -58,7 +58,7 @@ public class ServerChatPage {
                {
                    try {
                        String msg = bufferedReader.readLine();
-                       ChatViewController.addLabelForServer(msg,vBox);
+//                       ChatViewController.addLabelForServer(msg,vBox);
                    } catch (IOException e) {
                        throw new RuntimeException(e);
                    }

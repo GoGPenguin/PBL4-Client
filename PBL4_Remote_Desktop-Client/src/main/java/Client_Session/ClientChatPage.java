@@ -48,23 +48,5 @@ public class ClientChatPage {
             closeEverything(socket,bufferedReader,bufferedWriter);
         }
     }
-    public void receiveMessageFromServer(VBox vBox)
-    {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while(socket.isConnected())
-                {
-                    try {
-                        String msg = bufferedReader.readLine();
-                        ChatViewController.addLabelForClient(msg,vBox);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        closeEverything(socket,bufferedReader,bufferedWriter);
-                    }
 
-                }
-            }
-        }).start();
-    }
 }
