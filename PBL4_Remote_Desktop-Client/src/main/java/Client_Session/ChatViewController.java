@@ -8,8 +8,6 @@ package Client_Session;
 import Sub_Server_Session.Sub_ClientHandler;
 import Sub_Server_Session.Sub_ClientHandlerChat;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -23,7 +21,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.scene.Node;
@@ -36,7 +33,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-public class ChatViewController implements Initializable{
+public class ChatViewController implements Initializable {
     @FXML
     private Button btnConnect;
     @FXML
@@ -53,6 +50,8 @@ public class ChatViewController implements Initializable{
     private ScrollPane sp_main;
     @FXML
     private TextField tfPartnerID;
+
+
 
 
     @FXML
@@ -135,6 +134,12 @@ public class ChatViewController implements Initializable{
             String ipAddress = InetAddress.getLocalHost().getHostAddress();
 
             tfYourID.setText(ipAddress);
+
+
+
+
+
+
 
         } catch (UnknownHostException e) {
             e.printStackTrace();

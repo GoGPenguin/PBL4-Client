@@ -14,6 +14,8 @@ public class Sub_ClientHandler extends Thread{
     private Robot robot;
 
 
+
+
     private String opt = "";
 
 
@@ -22,8 +24,12 @@ public class Sub_ClientHandler extends Thread{
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
 
+
+
     private double clientWidthCm = dim.getWidth();
     private double clientHeightCm = dim.getHeight();
+
+
 
 
     public Sub_ClientHandler(Socket clientSocket, Robot robot, String opt) {
@@ -34,10 +40,14 @@ public class Sub_ClientHandler extends Thread{
     }
 
 
+
+
     @Override
     public void run() {
         getControl(opt);
     }
+
+
 
 
     public void getControl(String control) {
@@ -57,6 +67,10 @@ public class Sub_ClientHandler extends Thread{
 
 
 
+
+
+
+
     public void Remote_Desktop() {
         DataOutputStream out = null;
         try {
@@ -68,7 +82,6 @@ public class Sub_ClientHandler extends Thread{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
 
         //waitToConnect();
         try {

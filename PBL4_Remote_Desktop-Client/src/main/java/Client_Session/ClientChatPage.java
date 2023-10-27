@@ -1,7 +1,5 @@
 package Client_Session;
 
-import javafx.scene.layout.VBox;
-
 import java.io.*;
 import java.net.Socket;
 
@@ -48,5 +46,4 @@ public class ClientChatPage {
             closeEverything(socket,bufferedReader,bufferedWriter);
         }
     }
-
 }

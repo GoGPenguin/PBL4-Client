@@ -10,8 +10,12 @@ import java.net.Socket;
 
 public class Sub_Server extends Thread{
     private Robot robot = null;
+
+
     private ServerSocket serverSocket = null;
     private final int port = 6004;
+
+
 
     public Sub_Server () {
         System.out.println("Server chay roi ne");
