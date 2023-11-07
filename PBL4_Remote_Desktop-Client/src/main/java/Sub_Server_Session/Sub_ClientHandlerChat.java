@@ -8,8 +8,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
-import java.awt.*;
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -59,7 +60,6 @@ public class Sub_ClientHandlerChat extends Thread {
             while(true)
             {
                 clientSocket = server.accept();
-                System.out.println("Cho chat rồi");
                 DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
                 DataInputStream in = new DataInputStream(clientSocket.getInputStream());
 //                BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in));

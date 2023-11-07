@@ -23,6 +23,8 @@ public class RemoteWindow extends Thread{
 
     private String height;
 
+    private Socket socket;
+
     public void getIp(String ip, Scene scene) {
         this.ip = ip;
         this.scene = scene;
@@ -30,7 +32,7 @@ public class RemoteWindow extends Thread{
     }
     @Override
     public void run() {
-        Socket socket = null;
+
         try {
             socket = new Socket(ip, 6004);
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
@@ -44,16 +46,29 @@ public class RemoteWindow extends Thread{
             borderPane.setMinHeight(Double.parseDouble(height));
             borderPane.setMaxHeight(Double.parseDouble(height));
         } catch (IOException e) {
+            try {
+                socket.close();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
             throw new RuntimeException(e);
         }
+
         InputStream in = null;
         try {
             in = socket.getInputStream();
         } catch (IOException e) {
+            try {
+                socket.close();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
             e.printStackTrace();
         }
 
         new ReceivingScreen(in, imageView);
         new SendEvents(socket, borderPane, width, height, scene);
     }
+
+
 }
