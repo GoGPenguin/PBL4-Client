@@ -11,6 +11,7 @@ module com.example.pbl4_remote_desktopclient {
 //    requires eu.hansolo.tilesfx;
     requires java.logging;
     requires java.desktop;
+//    requires org.apache.commons.compress;
 
     opens Client_Session to javafx.fxml;
     exports Client_Session;
