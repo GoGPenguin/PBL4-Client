@@ -43,12 +43,17 @@ public class RemoteDesktop  {
 
     private String message ="";
 
+    private int activated = 0;
+
     public void setSocketClient(Socket socketClient, DataOutputStream out, DataInputStream in, Sub_Server sub_server) {
         this.sub_server = sub_server;
         this.socketClient = socketClient;
         this.in = in;
         this.out = out;
-        Init();
+        if (activated == 0) {
+            Init();
+            activated = 1;
+        }
     }
 
     public void setValue(String pwd)

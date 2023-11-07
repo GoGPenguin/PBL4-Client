@@ -26,6 +26,8 @@ public class StartWindowController implements Initializable {
 
     private Sub_Server sub_server = null;
 
+    public RemoteDesktop controller = new RemoteDesktop();
+
     public void  setClientSocket(Socket clientSocket, DataInputStream in, DataOutputStream out, Sub_Server sub_server) {
         this.sub_server = sub_server;
         this.clientSocket = clientSocket;
@@ -54,7 +56,7 @@ public class StartWindowController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("RemoteDesktop.fxml"));
             Node content = loader.load();
             contentArea.getChildren().setAll(content);
-            RemoteDesktop controller = loader.getController();
+            controller = loader.getController();
             String pwd = randomNumber();
             controller.setValue(pwd);
             controller.setSocketClient(clientSocket, out, in, sub_server);
@@ -89,17 +91,6 @@ public class StartWindowController implements Initializable {
         }
     }
 
-
-    public void loadContent(String fxmlFileName) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFileName));
-            Node content = loader.load();
-            contentArea.getChildren().setAll(content);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public String randomNumber() {
         Random random = new Random();
         int randomNumber = 100000 + random.nextInt(900000); // Generates a number between 100000 and 999999
@@ -108,4 +99,16 @@ public class StartWindowController implements Initializable {
     }
 
 
+    public void HomePage(MouseEvent mouseEvent) {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Homepage.fxml"));
+        Node content = null;
+        try {
+            content = loader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        contentArea.getChildren().setAll(content);
+
+    }
 }

@@ -23,6 +23,14 @@
          <children>
             <VBox prefHeight="469.0" prefWidth="200.0">
                <children>
+                  <Button fx:id="homePageButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#HomePage" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="Home Page">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
                   <Button fx:id="remoteDesktopButton" mnemonicParsing="false" onMouseClicked="#RemotePage" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: transparent;" text="Remote Desktop">
                      <font>
                         <Font size="16.0" />
@@ -48,11 +56,6 @@
                      </cursor>
                   </Button>            </children>
             </VBox>
-            <BorderPane layoutY="-1.0" prefHeight="60.0" prefWidth="200.0">
-               <left>
-                  <Label BorderPane.alignment="CENTER" />
-               </left>
-            </BorderPane>
          </children>
       </Pane>
    </left>
