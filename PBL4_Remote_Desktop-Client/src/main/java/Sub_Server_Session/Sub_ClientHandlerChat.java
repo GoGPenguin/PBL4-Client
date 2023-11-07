@@ -36,21 +36,10 @@ public class Sub_ClientHandlerChat extends Thread {
         this.button_send = button_send;
         this.tf_message = tf_message;
     }
-
-
     @Override
     public void run() {
         Chatting();
     }
-
-
-
-
-
-
-
-
-
 
     public void Chatting() {
         //Ghép chat vô đây
@@ -104,10 +93,12 @@ public class Sub_ClientHandlerChat extends Thread {
                 senderThread.start();
                 receiverThread.start();
             }
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
 
 
     public void File_Transfer() {
