@@ -65,6 +65,9 @@ public class ChatViewController implements Initializable {
     private DataInputStream dataInputStream;
     private DataOutputStream dataOutputStream;
 
+    private Thread senderThread;
+    private Thread receiverThread;
+
     public static void addLabelSend(String msgFromServer,VBox vBox)
     {
         //Test
@@ -145,6 +148,13 @@ public class ChatViewController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    private void clearChatView() {
+        Platform.runLater(() -> {
+            vbox_messages.getChildren().clear();
+        });
+    }
+
     @FXML
     void onClickConnect(MouseEvent event) {
 
@@ -154,7 +164,15 @@ public class ChatViewController implements Initializable {
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream.flush();
-            Thread senderThread = new Thread(() -> {
+
+
+            if (senderThread != null && senderThread.isAlive()) {
+                senderThread.interrupt();
+            }
+            if (receiverThread != null && receiverThread.isAlive()) {
+                receiverThread.interrupt();
+            }
+             senderThread = new Thread(() -> {
                         button_send.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
@@ -163,6 +181,7 @@ public class ChatViewController implements Initializable {
                                    message = tf_message.getText();
                                    dataOutputStream.writeUTF(message);
                                    addLabelSend(message,vbox_messages);
+                                   tf_message.setText("");
                                    dataOutputStream.flush();
                                }
                                catch (IOException e)
@@ -173,7 +192,7 @@ public class ChatViewController implements Initializable {
                         });
             });
 
-            Thread receiverThread = new Thread(() -> {
+             receiverThread = new Thread(() -> {
                 try {
                     String message;
                     while (true) {
@@ -188,6 +207,8 @@ public class ChatViewController implements Initializable {
 
             senderThread.start();
             receiverThread.start();
+
+            clearChatView();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -197,9 +218,6 @@ public class ChatViewController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         new Sub_ClientHandlerChat(this,vbox_messages,button_send,tf_message).start();
     }
-
-
-
 
 
 }
