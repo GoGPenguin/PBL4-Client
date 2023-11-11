@@ -70,6 +70,11 @@ public class TransferFileController implements Initializable {
     private OutputStream outputStream;
     private DataInputStream inputStream;
 
+    private Thread senderThread;
+    private Thread receiverThread;
+
+    private Thread sendFolder;
+
     public void setValue()
     {
         try {
@@ -82,6 +87,13 @@ public class TransferFileController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    private void clearViewTransfer() {
+        Platform.runLater(() -> {
+            vBoxSend.getChildren().clear();
+            vBoxDownload.getChildren().clear();
+        });
+    }
     @FXML
     void handleClickConnect(MouseEvent event) {
         String partnerID = tfPartnerID.getText();
@@ -90,7 +102,17 @@ public class TransferFileController implements Initializable {
             try {
                 socket = new Socket(partnerID,9090);
                 outputStream = new DataOutputStream(socket.getOutputStream());
-                Thread senderThread = new Thread(() -> {
+
+                if (senderThread != null && senderThread.isAlive()) {
+                    senderThread.interrupt();
+                }
+                if (receiverThread != null && receiverThread.isAlive()) {
+                    receiverThread.interrupt();
+                }
+                if (senderThread != null && senderThread.isAlive()) {
+                    senderThread.interrupt();
+                }
+                 senderThread = new Thread(() -> {
                     btnOpenFile.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent actionEvent) {
@@ -100,7 +122,7 @@ public class TransferFileController implements Initializable {
                 });
 
 
-                Thread receiverThread = new Thread(() -> {
+                 receiverThread = new Thread(() -> {
                     new ReceiveFile(socket,taYourPartner,btnFastDownload,vBoxDownload);
                 });
 
@@ -109,7 +131,7 @@ public class TransferFileController implements Initializable {
                 senderThread.start();
 
 
-                Thread sendFolder = new Thread(() ->{
+                 sendFolder = new Thread(() ->{
                     btnOpenFolder.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent actionEvent) {
@@ -119,6 +141,7 @@ public class TransferFileController implements Initializable {
                 });
 
                 sendFolder.start();
+                clearViewTransfer();
 
 
 
