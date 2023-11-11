@@ -26,7 +26,16 @@ public class StartWindowController implements Initializable {
 
     private Sub_Server sub_server = null;
 
-    public RemoteDesktop controller = new RemoteDesktop();
+    private RemoteDesktop controller = new RemoteDesktop();
+
+    private ChatViewController controllerChat = new ChatViewController();
+    private TransferFileController controllerFile = new TransferFileController();
+
+    private Node content;
+
+    private FXMLLoader loader;
+
+    public StackPane contentArea;
 
     public void  setClientSocket(Socket clientSocket, DataInputStream in, DataOutputStream out, Sub_Server sub_server) {
         this.sub_server = sub_server;
@@ -34,8 +43,6 @@ public class StartWindowController implements Initializable {
         this.in = in;
         this.out = out;
     }
-
-    public StackPane contentArea;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -53,8 +60,8 @@ public class StartWindowController implements Initializable {
 
     public void RemotePage(MouseEvent mouseEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("RemoteDesktop.fxml"));
-            Node content = loader.load();
+            loader = new FXMLLoader(getClass().getResource("RemoteDesktop.fxml"));
+            content = loader.load();
             contentArea.getChildren().setAll(content);
             controller = loader.getController();
             String pwd = randomNumber();
@@ -67,10 +74,10 @@ public class StartWindowController implements Initializable {
 
     public void ChatPage(MouseEvent mouseEvent) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Chat.fxml"));
-            Node content = loader.load();
+            loader = new FXMLLoader(getClass().getResource("Chat.fxml"));
+            content = loader.load();
             contentArea.getChildren().setAll(content);
-            ChatViewController controllerChat = loader.getController();
+            controllerChat = loader.getController();
             controllerChat.setValue();
 
         } catch (IOException e) {
@@ -80,11 +87,11 @@ public class StartWindowController implements Initializable {
     public void handleClickTransFile(MouseEvent event) {
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("TransferFile.fxml"));
-            Node content = loader.load();
+            loader = new FXMLLoader(getClass().getResource("TransferFile.fxml"));
+            content = loader.load();
             contentArea.getChildren().setAll(content);
-            TransferFileController controller = loader.getController();
-            controller.setValue();
+            controllerFile = loader.getController();
+            controllerFile.setValue();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -101,8 +108,8 @@ public class StartWindowController implements Initializable {
 
     public void HomePage(MouseEvent mouseEvent) {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Homepage.fxml"));
-        Node content = null;
+        loader = new FXMLLoader(getClass().getResource("Homepage.fxml"));
+        content = null;
         try {
             content = loader.load();
         } catch (IOException e) {

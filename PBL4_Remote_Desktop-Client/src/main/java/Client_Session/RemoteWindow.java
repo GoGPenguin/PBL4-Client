@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -24,15 +25,26 @@ public class RemoteWindow extends Thread{
     private String height;
 
     private Socket socket;
+    private Stage remoteStage;
 
-    public void getIp(String ip, Scene scene) {
+    public void getIp(String ip, Scene scene, Stage remoteStage) {
         this.ip = ip;
         this.scene = scene;
+        this.remoteStage = remoteStage;
         System.out.println(ip);
     }
+
+
     @Override
     public void run() {
 
+        remoteStage.setOnCloseRequest(e -> {
+            try {
+                socket.close();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         try {
             socket = new Socket(ip, 6004);
             DataOutputStream out = new DataOutputStream(socket.getOutputStream());
@@ -65,6 +77,8 @@ public class RemoteWindow extends Thread{
             }
             e.printStackTrace();
         }
+
+
 
         new ReceivingScreen(in, imageView);
         new SendEvents(socket, borderPane, width, height, scene);
