@@ -4,6 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -33,19 +34,22 @@ public class SendEvents {
         }
 
 
+
         scene.setOnKeyPressed(event -> {
-            // Handle key events
             KeyCode keyCode = event.getCode();
             int asciiCode = keyCode.getCode();
+
+            // Gửi mã phím tới phía server
             writer.println(Commands.PRESS_KEY.getAbbrev());
             writer.println(asciiCode);
             writer.flush();
         });
-//
+
         scene.setOnKeyReleased(event -> {
-            // Handle key release events
             KeyCode keyCode = event.getCode();
             int asciiCode = keyCode.getCode();
+
+            // Gửi mã phím tới phía server
             writer.println(Commands.RELEASE_KEY.getAbbrev());
             writer.println(asciiCode);
             writer.flush();

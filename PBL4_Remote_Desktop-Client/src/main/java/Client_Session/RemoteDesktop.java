@@ -5,12 +5,15 @@ import Sub_Server_Session.Sub_Server;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -40,12 +43,17 @@ public class RemoteDesktop  {
 
     private String message ="";
 
+    private int activated = 0;
+
     public void setSocketClient(Socket socketClient, DataOutputStream out, DataInputStream in, Sub_Server sub_server) {
         this.sub_server = sub_server;
         this.socketClient = socketClient;
         this.in = in;
         this.out = out;
-        Init();
+        if (activated == 0) {
+            Init();
+            activated = 1;
+        }
     }
 
     public void setValue(String pwd)
@@ -79,14 +87,8 @@ public class RemoteDesktop  {
                     if (!data.equals("True") && !data.equals("False") && !message.isEmpty()) {
                         data = data.equals(localPwd.getText()) ? "True" : "False";
                         message = msg.getReceiver() + "," + msg.getStatus() + "," + data;
-                        if (data.equals("True")) {
-                            out.writeUTF(message);
-                            out.flush();
-                        }
-                        else {
-                            out.writeUTF(message);
-                            out.flush();
-                        }
+                        out.writeUTF(message);
+                        out.flush();
                     }
                     //True thì tạo luồng khác để remote
                     else if(data.equals("True")) {
@@ -96,14 +98,31 @@ public class RemoteDesktop  {
                             Pane remoteRoot = null;
                             try {
                                 remoteRoot = remoteLoader.load();
+                            } catch (IOException e) {
+                                throw new RuntimeException();
                             }
-                            catch (IOException e) {
-                                throw  new RuntimeException();
-                            }
+
                             Scene remoteScene = new Scene(remoteRoot);
+
+                            Screen screen = Screen.getPrimary();
+                            Rectangle2D bounds = screen.getVisualBounds();
+
+                            double screenWidth = bounds.getWidth();
+                            double screenHeight = bounds.getHeight();
+
+                            remoteStage.setWidth(screenWidth);
+                            remoteStage.setHeight(screenHeight);
+
                             remoteStage.setScene(remoteScene);
-                            remoteStage.setFullScreen(true);
+                            remoteStage.setOnCloseRequest(e -> {
+                                try {
+                                    socketClient.close();
+                                } catch (IOException ex) {
+                                    throw new RuntimeException(ex);
+                                }
+                            });
                             remoteStage.show();
+
                             RemoteWindow remoteController = remoteLoader.getController();
                             remoteController.getIp(remoteIp.getText(), remoteScene);
                             remoteController.start();

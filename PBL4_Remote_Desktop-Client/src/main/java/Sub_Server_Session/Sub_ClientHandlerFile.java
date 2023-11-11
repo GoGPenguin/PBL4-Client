@@ -2,18 +2,14 @@ package Sub_Server_Session;
 
 
 import Client_Session.TransferFileController;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-
 import javafx.scene.layout.VBox;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -74,8 +70,6 @@ public class Sub_ClientHandlerFile extends Thread {
             {
                 clientSocket = server.accept();
                 System.out.println("Cho truyen file rồi");
-                OutputStream outputStream = new DataOutputStream(clientSocket.getOutputStream());
-                DataInputStream inputStream = new DataInputStream(clientSocket.getInputStream());
 
                 // Tạo một luồng để gửi tin nhắn
                 Thread senderThread = new Thread(() -> {

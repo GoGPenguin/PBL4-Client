@@ -2,10 +2,13 @@
 
 
 
+
+
+
+
 package Client_Session;
 
 
-import Sub_Server_Session.Sub_ClientHandler;
 import Sub_Server_Session.Sub_ClientHandlerChat;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -23,15 +26,16 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import javafx.scene.Node;
 
-
-import java.io.*;
-import java.net.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 public class ChatViewController implements Initializable {
     @FXML
@@ -42,8 +46,12 @@ public class ChatViewController implements Initializable {
     private Label labelPartnerID;
 
 
+
+
     @FXML
     private Label labelYourID;
+
+
 
 
     @FXML
@@ -54,8 +62,13 @@ public class ChatViewController implements Initializable {
 
 
 
+
+
+
+
     @FXML
     private TextField tfYourID;
+
 
     @FXML
     private TextField tf_message;
@@ -64,6 +77,7 @@ public class ChatViewController implements Initializable {
     private Socket socket;
     private DataInputStream dataInputStream;
     private DataOutputStream dataOutputStream;
+
 
     private Thread senderThread;
     private Thread receiverThread;
@@ -95,6 +109,8 @@ public class ChatViewController implements Initializable {
             public void run() {
                 vBox.getChildren().add(hBox2);
                 vBox.getChildren().add(hBox);
+
+
 
 
             }
@@ -134,9 +150,18 @@ public class ChatViewController implements Initializable {
     {
         try {
 
+
             String ipAddress = InetAddress.getLocalHost().getHostAddress();
 
+
             tfYourID.setText(ipAddress);
+
+
+
+
+
+
+
 
 
 
@@ -157,6 +182,7 @@ public class ChatViewController implements Initializable {
 
     @FXML
     void onClickConnect(MouseEvent event) {
+
 
         String partnerID = tfPartnerID.getText();
         try {
@@ -192,6 +218,7 @@ public class ChatViewController implements Initializable {
                         });
             });
 
+
              receiverThread = new Thread(() -> {
                 try {
                     String message;
@@ -205,6 +232,7 @@ public class ChatViewController implements Initializable {
                 }
             });
 
+
             senderThread.start();
             receiverThread.start();
 
@@ -214,6 +242,7 @@ public class ChatViewController implements Initializable {
         }
     }
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         new Sub_ClientHandlerChat(this,vbox_messages,button_send,tf_message).start();
@@ -221,5 +250,8 @@ public class ChatViewController implements Initializable {
 
 
 }
+
+
+
 
 
