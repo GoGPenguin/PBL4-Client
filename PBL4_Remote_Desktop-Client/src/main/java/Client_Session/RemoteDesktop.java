@@ -45,6 +45,7 @@ public class RemoteDesktop  {
 
     private int activated = 0;
 
+
     public void setSocketClient(Socket socketClient, DataOutputStream out, DataInputStream in, Sub_Server sub_server) {
         this.sub_server = sub_server;
         this.socketClient = socketClient;

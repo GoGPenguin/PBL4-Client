@@ -26,10 +26,10 @@ public class StartWindowController implements Initializable {
 
     private Sub_Server sub_server = null;
 
-    private RemoteDesktop controller = new RemoteDesktop();
+    private RemoteDesktop controller = new RemoteDesktop() ;
 
-    private ChatViewController controllerChat = new ChatViewController();
-    private TransferFileController controllerFile = new TransferFileController();
+    private ChatViewController controllerChat;
+    private TransferFileController controllerFile;
 
     private Node content;
 
@@ -58,18 +58,34 @@ public class StartWindowController implements Initializable {
         System.exit(0);
     }
 
-    public void RemotePage(MouseEvent mouseEvent) {
+    private void loadContent(String fxmlFile, Object controllerInstance) {
         try {
-            loader = new FXMLLoader(getClass().getResource("RemoteDesktop.fxml"));
+            loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            loader.setController(controllerInstance);
             content = loader.load();
-            contentArea.getChildren().setAll(content);
-            controller = loader.getController();
-            String pwd = randomNumber();
-            controller.setValue(pwd);
-            controller.setSocketClient(clientSocket, out, in, sub_server);
+
+            contentArea.getChildren().clear();
+            contentArea.getChildren().add(content);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void RemotePage(MouseEvent mouseEvent) {
+//        try {
+//            loader = new FXMLLoader(getClass().getResource("RemoteDesktop.fxml"));
+//            content = loader.load();
+//            contentArea.getChildren().clear();
+//            contentArea.getChildren().add(content);
+//            controller = loader.getController();
+//            String pwd = randomNumber();
+//            controller.setValue(pwd);
+//            controller.setSocketClient(clientSocket, out, in, sub_server);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        String fxmlFile = "RemoteDesktop.fxml";
+        loadContent(fxmlFile, controller);
     }
 
     public void ChatPage(MouseEvent mouseEvent) {
