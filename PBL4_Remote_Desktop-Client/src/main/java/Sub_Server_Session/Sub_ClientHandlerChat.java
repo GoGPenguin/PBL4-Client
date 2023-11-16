@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -46,6 +47,7 @@ public class Sub_ClientHandlerChat extends Thread {
         //Ghép chat vô đây
         try {
             server = new ServerSocket(9999);
+
             while(true)
             {
                 clientSocket = server.accept();
@@ -93,15 +95,9 @@ public class Sub_ClientHandlerChat extends Thread {
                 senderThread.start();
                 receiverThread.start();
             }
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-
-
-    public void File_Transfer() {
-        //Ghép truyền file vô đây
-    }
 }

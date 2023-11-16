@@ -81,6 +81,7 @@ public class ChatViewController implements Initializable {
 
     private Thread senderThread;
     private Thread receiverThread;
+    private static boolean subClientHandlerChatCreated = false;
 
     public static void addLabelSend(String msgFromServer,VBox vBox)
     {
@@ -190,8 +191,6 @@ public class ChatViewController implements Initializable {
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream.flush();
-
-
             if (senderThread != null && senderThread.isAlive()) {
                 senderThread.interrupt();
             }
@@ -245,7 +244,11 @@ public class ChatViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        new Sub_ClientHandlerChat(this,vbox_messages,button_send,tf_message).start();
+//        new Sub_ClientHandlerChat(this,vbox_messages,button_send,tf_message).start();
+        if (!subClientHandlerChatCreated) {
+            new Sub_ClientHandlerChat(this, vbox_messages, button_send, tf_message).start();
+            subClientHandlerChatCreated = true;
+        }
     }
 
 
