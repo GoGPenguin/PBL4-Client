@@ -197,28 +197,28 @@ public class ChatViewController implements Initializable {
             if (receiverThread != null && receiverThread.isAlive()) {
                 receiverThread.interrupt();
             }
-             senderThread = new Thread(() -> {
-                        button_send.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent actionEvent) {
-                               try{
-                                   String message;
-                                   message = tf_message.getText();
-                                   dataOutputStream.writeUTF(message);
-                                   addLabelSend(message,vbox_messages);
-                                   tf_message.setText("");
-                                   dataOutputStream.flush();
-                               }
-                               catch (IOException e)
-                               {
-                                   e.printStackTrace();
-                               }
-                            }
-                        });
+            senderThread = new Thread(() -> {
+                button_send.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        try{
+                            String message;
+                            message = tf_message.getText();
+                            dataOutputStream.writeUTF(message);
+                            addLabelSend(message,vbox_messages);
+                            tf_message.setText("");
+                            dataOutputStream.flush();
+                        }
+                        catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             });
 
 
-             receiverThread = new Thread(() -> {
+            receiverThread = new Thread(() -> {
                 try {
                     String message;
                     while (true) {

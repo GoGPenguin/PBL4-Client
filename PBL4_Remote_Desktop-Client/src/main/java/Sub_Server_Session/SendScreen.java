@@ -37,6 +37,13 @@ public class SendScreen{
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+        finally {
+            try {
+                socket.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 }

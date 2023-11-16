@@ -85,6 +85,7 @@ public class Sub_ClientHandler extends Thread{
         }
         catch (Exception e) {
             try {
+                System.out.println("Đóng kết nối");
                 clientSocket.close();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);

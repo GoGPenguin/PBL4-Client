@@ -114,17 +114,11 @@ public class RemoteDesktop  {
                             remoteStage.setHeight(screenHeight);
 
                             remoteStage.setScene(remoteScene);
-                            remoteStage.setOnCloseRequest(e -> {
-                                try {
-                                    socketClient.close();
-                                } catch (IOException ex) {
-                                    throw new RuntimeException(ex);
-                                }
-                            });
+
                             remoteStage.show();
 
                             RemoteWindow remoteController = remoteLoader.getController();
-                            remoteController.getIp(remoteIp.getText(), remoteScene);
+                            remoteController.getIp(remoteIp.getText(), remoteScene, remoteStage);
                             remoteController.start();
                         });
                         message = "";
