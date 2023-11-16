@@ -6,7 +6,17 @@
 
 
 
+
+
+
+
+
+
+
+
 package Client_Session;
+
+
 
 
 import Sub_Server_Session.Sub_ClientHandlerChat;
@@ -26,6 +36,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -48,8 +59,16 @@ public class ChatViewController implements Initializable {
 
 
 
+
+
+
+
     @FXML
     private Label labelYourID;
+
+
+
+
 
 
 
@@ -66,8 +85,18 @@ public class ChatViewController implements Initializable {
 
 
 
+
+
+
+
+
+
+
+
     @FXML
     private TextField tfYourID;
+
+
 
 
     @FXML
@@ -79,8 +108,12 @@ public class ChatViewController implements Initializable {
     private DataOutputStream dataOutputStream;
 
 
+
+
     private Thread senderThread;
     private Thread receiverThread;
+    private static boolean subClientHandlerChatCreated = false;
+
 
     public static void addLabelSend(String msgFromServer,VBox vBox)
     {
@@ -109,6 +142,10 @@ public class ChatViewController implements Initializable {
             public void run() {
                 vBox.getChildren().add(hBox2);
                 vBox.getChildren().add(hBox);
+
+
+
+
 
 
 
@@ -151,10 +188,28 @@ public class ChatViewController implements Initializable {
         try {
 
 
+
+
             String ipAddress = InetAddress.getLocalHost().getHostAddress();
 
 
+
+
             tfYourID.setText(ipAddress);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -174,14 +229,18 @@ public class ChatViewController implements Initializable {
         }
     }
 
+
     private void clearChatView() {
         Platform.runLater(() -> {
             vbox_messages.getChildren().clear();
         });
     }
 
+
     @FXML
     void onClickConnect(MouseEvent event) {
+
+
 
 
         String partnerID = tfPartnerID.getText();
@@ -192,34 +251,38 @@ public class ChatViewController implements Initializable {
             dataOutputStream.flush();
 
 
+
+
             if (senderThread != null && senderThread.isAlive()) {
                 senderThread.interrupt();
             }
             if (receiverThread != null && receiverThread.isAlive()) {
                 receiverThread.interrupt();
             }
-             senderThread = new Thread(() -> {
-                        button_send.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent actionEvent) {
-                               try{
-                                   String message;
-                                   message = tf_message.getText();
-                                   dataOutputStream.writeUTF(message);
-                                   addLabelSend(message,vbox_messages);
-                                   tf_message.setText("");
-                                   dataOutputStream.flush();
-                               }
-                               catch (IOException e)
-                               {
-                                   e.printStackTrace();
-                               }
-                            }
-                        });
+            senderThread = new Thread(() -> {
+                button_send.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        try{
+                            String message;
+                            message = tf_message.getText();
+                            dataOutputStream.writeUTF(message);
+                            addLabelSend(message,vbox_messages);
+                            tf_message.setText("");
+                            dataOutputStream.flush();
+                        }
+                        catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+                });
             });
 
 
-             receiverThread = new Thread(() -> {
+
+
+            receiverThread = new Thread(() -> {
                 try {
                     String message;
                     while (true) {
@@ -233,8 +296,11 @@ public class ChatViewController implements Initializable {
             });
 
 
+
+
             senderThread.start();
             receiverThread.start();
+
 
             clearChatView();
         } catch (IOException e) {
@@ -243,13 +309,27 @@ public class ChatViewController implements Initializable {
     }
 
 
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        new Sub_ClientHandlerChat(this,vbox_messages,button_send,tf_message).start();
+//        new Sub_ClientHandlerChat(this,vbox_messages,button_send,tf_message).start();
+        if (!subClientHandlerChatCreated) {
+            new Sub_ClientHandlerChat(this, vbox_messages, button_send, tf_message).start();
+            subClientHandlerChatCreated = true;
+        }
     }
 
 
+
+
 }
+
+
+
+
+
+
 
 
 
