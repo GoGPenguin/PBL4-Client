@@ -85,6 +85,7 @@ public class RemoteDesktop  {
                     MessageHandler msg = new MessageHandler(message);
                     String data = msg.getData();
                     if (!data.equals("True") && !data.equals("False") && !message.isEmpty()) {
+                        System.out.println(localPwd.getText());
                         data = data.equals(localPwd.getText()) ? "True" : "False";
                         message = msg.getReceiver() + "," + msg.getStatus() + "," + data;
                         out.writeUTF(message);

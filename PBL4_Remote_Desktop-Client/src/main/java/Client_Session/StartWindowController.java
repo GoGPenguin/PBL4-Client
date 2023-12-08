@@ -1,12 +1,15 @@
 package Client_Session;
 
 
+
+
 import Sub_Server_Session.Sub_Server;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -16,26 +19,82 @@ import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
 
+
 public class StartWindowController implements Initializable {
+
 
     private Socket clientSocket;
 
+
     private DataInputStream in;
+
 
     private DataOutputStream out;
 
+
     private Sub_Server sub_server = null;
 
-    private RemoteDesktop controller = new RemoteDesktop();
 
-    private ChatViewController controllerChat = new ChatViewController();
-    private TransferFileController controllerFile = new TransferFileController();
+    private RemoteDesktop controller = null ;
+
+
+    private ChatViewController controllerChat = null ;
+    private TransferFileController controllerFile = null ;
+
 
     private Node content;
 
+
     private FXMLLoader loader;
 
+
+    private FXMLLoader remoteLoader = new FXMLLoader(getClass().getResource("RemoteDesktop.fxml"));
+
+
+    private Node remoteContent;
+
+
+    {
+        try {
+            remoteContent = remoteLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    private FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("Chat.fxml"));
+
+
+    private Node chatContent;
+
+
+    {
+        try {
+            chatContent = chatLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    private FXMLLoader fileLoader = new FXMLLoader(getClass().getResource("TransferFile.fxml"));
+
+
+    private Node fileContent;
+
+
+    {
+        try {
+            fileContent = fileLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public StackPane contentArea;
+
 
     public void  setClientSocket(Socket clientSocket, DataInputStream in, DataOutputStream out, Sub_Server sub_server) {
         this.sub_server = sub_server;
@@ -44,10 +103,13 @@ public class StartWindowController implements Initializable {
         this.out = out;
     }
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+
     }
+
 
     public void exit(MouseEvent mouseEvent) {
         try {
@@ -58,55 +120,54 @@ public class StartWindowController implements Initializable {
         System.exit(0);
     }
 
+
     public void RemotePage(MouseEvent mouseEvent) {
-        try {
-            loader = new FXMLLoader(getClass().getResource("RemoteDesktop.fxml"));
-            content = loader.load();
-            contentArea.getChildren().setAll(content);
-            controller = loader.getController();
-            String pwd = randomNumber();
-            controller.setValue(pwd);
-            controller.setSocketClient(clientSocket, out, in, sub_server);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        loader = remoteLoader;
+        content = remoteContent;
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(content);
+        if (controller == null) controller = loader.getController();
+        String pwd = randomNumber();
+        controller.setValue(pwd);
+        controller.setSocketClient(clientSocket, out, in, sub_server);
     }
 
-    public void ChatPage(MouseEvent mouseEvent) {
-        try {
-            loader = new FXMLLoader(getClass().getResource("Chat.fxml"));
-            content = loader.load();
-            contentArea.getChildren().setAll(content);
-            controllerChat = loader.getController();
-            controllerChat.setValue();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+
+    public void ChatPage(MouseEvent mouseEvent) {
+        loader = chatLoader;
+        content = chatContent;
+        contentArea.getChildren().setAll(content);
+        if (controllerChat == null) controllerChat = loader.getController();
+        controllerChat.setValue();
     }
     public void handleClickTransFile(MouseEvent event) {
 
-        try {
-            loader = new FXMLLoader(getClass().getResource("TransferFile.fxml"));
-            content = loader.load();
-            contentArea.getChildren().setAll(content);
-            controllerFile = loader.getController();
-            controllerFile.setValue();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        loader = fileLoader;
+        content = fileContent;
+        contentArea.getChildren().setAll(content);
+        if (controllerFile == null) controllerFile = loader.getController();
+        controllerFile.setValue();
+
+
     }
+
 
     public String randomNumber() {
         Random random = new Random();
         int randomNumber = 100000 + random.nextInt(900000); // Generates a number between 100000 and 999999
 
+
         return String.valueOf(randomNumber);
     }
 
 
+
+
     public void HomePage(MouseEvent mouseEvent) {
+
 
         loader = new FXMLLoader(getClass().getResource("Homepage.fxml"));
         content = null;
@@ -117,5 +178,9 @@ public class StartWindowController implements Initializable {
         }
         contentArea.getChildren().setAll(content);
 
+
     }
 }
+
+
+

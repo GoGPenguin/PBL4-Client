@@ -1,5 +1,6 @@
 package Client_Session;
 
+
 import Sub_Server_Session.Sub_Server;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,29 +9,35 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
+
 public class StartWindow extends Application {
     public static void main(String[] args) {
         launch(args);
     }
 
+
     @Override
     public void start(Stage stage) throws IOException {
 
-        String ip = "192.168.35.9";
+
+        String ip = "10.10.58.157";
         int port = 6003;
         int maxAttempts = 10; // Maximum number of connection attempts
+
 
         // test
         boolean connected = false;
         Socket client = null;
         DataInputStream in = null;
         DataOutputStream out = null;
+
 
         // Attempt to connect to the server with retries
         for (int attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -52,6 +59,7 @@ public class StartWindow extends Application {
             }
         }
 
+
         if (connected) {
             FXMLLoader fxmlLoader = new FXMLLoader(StartWindow.class.getResource("StartWindow.fxml"));
             Pane pane = fxmlLoader.load();
@@ -67,3 +75,4 @@ public class StartWindow extends Application {
         }
     }
 }
+

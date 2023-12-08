@@ -75,6 +75,8 @@ public class TransferFileController implements Initializable {
 
     private Thread sendFolder;
 
+    private static boolean subClientHandlerTransferFileCreated = false;
+
     public void setValue()
     {
         try {
@@ -157,7 +159,11 @@ public class TransferFileController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-       new Sub_ClientHandlerFile(this,taYourPartner,btnFastDownload,btnOpenFile,taYourFile,btnOpenFolder,vBoxDownload,vBoxSend).start();
+//       new Sub_ClientHandlerFile(this,taYourPartner,btnFastDownload,btnOpenFile,taYourFile,btnOpenFolder,vBoxDownload,vBoxSend).start();
+        if (!subClientHandlerTransferFileCreated) {
+            new Sub_ClientHandlerFile(this,taYourPartner,btnFastDownload,btnOpenFile,taYourFile,btnOpenFolder,vBoxDownload,vBoxSend).start();
+            subClientHandlerTransferFileCreated = true;
+        }
     }
 }
 
