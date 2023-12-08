@@ -25,7 +25,9 @@ public class Sub_Server extends Thread{
     @Override
     public void run() {
         try {
-            this.robot = new Robot();
+            GraphicsEnvironment gEnv = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsDevice gDev = gEnv.getDefaultScreenDevice();
+            this.robot = new Robot(gDev);
             this.serverSocket = new ServerSocket(port);
             Sub_ClientHandler remoteServer = null;
             while (true) {

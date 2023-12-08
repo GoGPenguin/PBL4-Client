@@ -53,10 +53,10 @@ public class RemoteWindow extends Thread{
             DataInputStream initSize = new DataInputStream(socket.getInputStream());
             width = initSize.readUTF();
             height = initSize.readUTF();
-            borderPane.setMinWidth(Double.parseDouble(width));
-            borderPane.setMaxWidth(Double.parseDouble(width));
-            borderPane.setMinHeight(Double.parseDouble(height));
-            borderPane.setMaxHeight(Double.parseDouble(height));
+//            borderPane.setMinWidth(Double.parseDouble(width));
+//            borderPane.setMaxWidth(Double.parseDouble(width));
+//            borderPane.setMinHeight(Double.parseDouble(height));
+//            borderPane.setMaxHeight(Double.parseDouble(height));
         } catch (IOException e) {
             try {
                 socket.close();
@@ -80,8 +80,8 @@ public class RemoteWindow extends Thread{
 
 
 
-        new ReceivingScreen(in, imageView);
-        new SendEvents(socket, borderPane, width, height, scene);
+        new ReceivingScreen(in, imageView, borderPane);
+        new SendEvents(socket, borderPane, width, height, scene, imageView);
     }
 
 

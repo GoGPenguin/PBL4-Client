@@ -17,23 +17,24 @@ import java.util.Random;
 import java.util.ResourceBundle;
 
 public class StartWindowController implements Initializable {
-
     private Socket clientSocket;
-
     private DataInputStream in;
-
     private DataOutputStream out;
-
     private Sub_Server sub_server = null;
-
-    private RemoteDesktop controller = new RemoteDesktop() ;
-
-    private ChatViewController controllerChat;
-    private TransferFileController controllerFile;
-
+    private RemoteDesktop controller = null ;
+    private ChatViewController controllerChat = null ;
+    private TransferFileController controllerFile = null ;
     private Node content;
-
     private FXMLLoader loader;
+    private Node remoteContent;
+    private Node chatContent;
+    private Node fileContent;
+    private FXMLLoader remoteLoader = new FXMLLoader(getClass().getResource("RemoteDesktop.fxml"));
+    private FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("Chat.fxml"));
+    private FXMLLoader fileLoader = new FXMLLoader(getClass().getResource("TransferFile.fxml"));
+
+
+
 
     public StackPane contentArea;
 
@@ -46,7 +47,13 @@ public class StartWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        try {
+            remoteContent = remoteLoader.load();
+            chatContent = chatLoader.load();
+            fileContent = fileLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void exit(MouseEvent mouseEvent) {
@@ -58,60 +65,33 @@ public class StartWindowController implements Initializable {
         System.exit(0);
     }
 
-    private void loadContent(String fxmlFile, Object controllerInstance) {
-        try {
-            loader = new FXMLLoader(getClass().getResource(fxmlFile));
-            loader.setController(controllerInstance);
-            content = loader.load();
-
-            contentArea.getChildren().clear();
-            contentArea.getChildren().add(content);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void RemotePage(MouseEvent mouseEvent) {
-//        try {
-//            loader = new FXMLLoader(getClass().getResource("RemoteDesktop.fxml"));
-//            content = loader.load();
-//            contentArea.getChildren().clear();
-//            contentArea.getChildren().add(content);
-//            controller = loader.getController();
-//            String pwd = randomNumber();
-//            controller.setValue(pwd);
-//            controller.setSocketClient(clientSocket, out, in, sub_server);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        String fxmlFile = "RemoteDesktop.fxml";
-        loadContent(fxmlFile, controller);
+        loader = remoteLoader;
+        content = remoteContent;
+        contentArea.getChildren().clear();
+        contentArea.getChildren().add(content);
+        if (controller == null) controller = loader.getController();
+        String pwd = randomNumber();
+        controller.setValue(pwd);
+        controller.setSocketClient(clientSocket, out, in, sub_server);
     }
+
 
     public void ChatPage(MouseEvent mouseEvent) {
-        try {
-            loader = new FXMLLoader(getClass().getResource("Chat.fxml"));
-            content = loader.load();
+            loader = chatLoader;
+            content = chatContent;
             contentArea.getChildren().setAll(content);
-            controllerChat = loader.getController();
+            if (controllerChat == null) controllerChat = loader.getController();
             controllerChat.setValue();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
     public void handleClickTransFile(MouseEvent event) {
 
-        try {
-            loader = new FXMLLoader(getClass().getResource("TransferFile.fxml"));
-            content = loader.load();
-            contentArea.getChildren().setAll(content);
-            controllerFile = loader.getController();
-            controllerFile.setValue();
+        loader = fileLoader;
+        content = fileContent;
+        contentArea.getChildren().setAll(content);
+        if (controllerFile == null) controllerFile = loader.getController();
+        controllerFile.setValue();
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public String randomNumber() {

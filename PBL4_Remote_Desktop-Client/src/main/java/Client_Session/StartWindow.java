@@ -22,7 +22,7 @@ public class StartWindow extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        String ip = "192.168.35.9";
+        String ip = "10.10.58.157";
         int port = 6003;
         int maxAttempts = 10; // Maximum number of connection attempts
 

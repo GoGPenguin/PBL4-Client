@@ -3,6 +3,8 @@ package Client_Session;
 import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,10 +13,12 @@ import java.nio.ByteBuffer;
 public class ReceivingScreen extends Thread {
     private InputStream in;
     private ImageView imageView;
+    private BorderPane cPane;
 
-    public ReceivingScreen(InputStream in, ImageView imageView) {
+    public ReceivingScreen(InputStream in, ImageView imageView, BorderPane cPane) {
         this.in = in;
         this.imageView = imageView;
+        this.cPane = cPane;
         start();
     }
 
@@ -46,7 +50,7 @@ public class ReceivingScreen extends Thread {
                     continue;
                 }
 
-                Platform.runLater(() -> {
+                Platform.runLater(() -> {;
                     Image image = new Image(new ByteArrayInputStream(imageData),
                             imageView.getFitWidth(), imageView.getFitHeight(), true, true);
                     imageView.setImage(image);
