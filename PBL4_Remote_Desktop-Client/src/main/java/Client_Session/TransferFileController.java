@@ -6,11 +6,13 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.*;
@@ -18,6 +20,7 @@ import javafx.stage.*;
 import java.io.*;
 import java.net.*;
 import java.util.ResourceBundle;
+
 
 public class TransferFileController implements Initializable {
     @FXML
@@ -32,30 +35,43 @@ public class TransferFileController implements Initializable {
     @FXML
     private Button btnOpenFile;
 
+
     @FXML
     private Button btnOpenFolder;
+
+
+
 
 
 
     @FXML
     private Label labelPartnerFile;
 
+
     @FXML
     private Label labelYourFile;
+
 
     @FXML
     private Label labelYourID;
 
 
 
+
+
+
     @FXML
     private TextArea taYourFile;
+
 
     @FXML
     private TextArea taYourPartner;
 
+
     @FXML
     private TextField tfYourID;
+
+
 
 
     @FXML
@@ -63,11 +79,17 @@ public class TransferFileController implements Initializable {
 
 
 
+
+
+
     @FXML
     private VBox vBoxDownload;
 
+
     @FXML
     private VBox vBoxSend;
+
+
 
 
     private ServerSocket serverSocket;
@@ -75,8 +97,10 @@ public class TransferFileController implements Initializable {
     private OutputStream outputStream;
     private DataInputStream inputStream;
 
+
     private Thread senderThread;
     private Thread receiverThread;
+
 
     private Thread sendFolder;
 
@@ -86,14 +110,18 @@ public class TransferFileController implements Initializable {
     {
         try {
 
+
             String ipAddress = InetAddress.getLocalHost().getHostAddress();
 
+
             tfYourID.setText(ipAddress);
+
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
     }
+
 
     private void clearViewTransfer() {
         Platform.runLater(() -> {
@@ -110,6 +138,7 @@ public class TransferFileController implements Initializable {
                 socket = new Socket(partnerID,9090);
                 outputStream = new DataOutputStream(socket.getOutputStream());
 
+
                 if (senderThread != null && senderThread.isAlive()) {
                     senderThread.interrupt();
                 }
@@ -119,7 +148,7 @@ public class TransferFileController implements Initializable {
                 if (senderThread != null && senderThread.isAlive()) {
                     senderThread.interrupt();
                 }
-                 senderThread = new Thread(() -> {
+                senderThread = new Thread(() -> {
                     btnOpenFile.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent actionEvent) {
@@ -129,16 +158,22 @@ public class TransferFileController implements Initializable {
                 });
 
 
+
+
                  receiverThread = new Thread(() -> {
                     new ReceiveFile(socket,taYourPartner,btnFastDownload,vBoxDownload,vBoxSend);
                 });
+
+
 
 
                 receiverThread.start();
                 senderThread.start();
 
 
-                 sendFolder = new Thread(() ->{
+
+
+                sendFolder = new Thread(() ->{
                     btnOpenFolder.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent actionEvent) {
@@ -147,8 +182,12 @@ public class TransferFileController implements Initializable {
                     });
                 });
 
+
                 sendFolder.start();
                 clearViewTransfer();
+
+
+
 
 
 
@@ -158,6 +197,7 @@ public class TransferFileController implements Initializable {
                 e.printStackTrace();
                 showErrorAlert("Error", "Địa chỉ IP không chính xác. Vui lòng nhập lại!", e);
             }
+
 
         }
     }
@@ -192,6 +232,8 @@ public class TransferFileController implements Initializable {
     }
 
 
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
        new Sub_ClientHandlerFile(this,taYourPartner,btnFastDownload,btnOpenFile,taYourFile,btnOpenFolder,vBoxDownload,vBoxSend).start();
@@ -201,4 +243,6 @@ public class TransferFileController implements Initializable {
         }
     }
 }
+
+
 

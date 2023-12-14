@@ -90,6 +90,7 @@ public class ChatViewController implements Initializable {
     @FXML
     private Button btnCloseConnect;
 
+
     public static void addLabelSend(String msgFromServer,VBox vBox)
     {
         //Test
@@ -212,7 +213,7 @@ public class ChatViewController implements Initializable {
                         message = dataInputStream.readUTF();
                         if(message.equals("Connect is closed by partner"))
                         {
-                            dataOutputStream.close();
+                            dataInputStream.close();
                             dataInputStream.close();
                             socket.close();
                             clearChatView();
@@ -236,30 +237,37 @@ public class ChatViewController implements Initializable {
     }
     @FXML
     void onClickCloseConnect(MouseEvent event) throws IOException {
-            dataOutputStream.writeUTF("Connect is closed by partner");
-            clearChatView();
-            dataOutputStream.close();
-            dataInputStream.close();
-            socket.close();
+        dataOutputStream.writeUTF("Connect is closed by partner");
+        dataOutputStream.flush();
+        clearChatView();
+        dataInputStream.close();
+        dataInputStream.close();
+        socket.close();
     }
     private void showErrorAlert(String title, String header) {
         Stage dialogStage = new Stage();
         dialogStage.initStyle(StageStyle.UTILITY);
         dialogStage.initModality(Modality.APPLICATION_MODAL);
 
+
         Label label = new Label(header);
         label.setWrapText(true);
+
 
         StackPane root = new StackPane();
         root.getChildren().add(label);
 
+
         Scene scene = new Scene(root, 300, 100);
+
 
         dialogStage.setTitle(title);
         dialogStage.setScene(scene);
 
+
         dialogStage.showAndWait();
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -269,7 +277,6 @@ public class ChatViewController implements Initializable {
             subClientHandlerChatCreated = true;
         }
     }
-
 
 
 

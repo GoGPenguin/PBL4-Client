@@ -1,5 +1,6 @@
 package Sub_Server_Session;
 
+
 import Client_Session.ChatViewController;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -22,16 +23,21 @@ import java.net.BindException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+
 public class Sub_ClientHandlerChat extends Thread {
     private Socket clientSocket;
+
 
     private ChatViewController chatViewController;
     private VBox vbox_message;
 
+
     private ServerSocket server;
+
 
     @FXML
     private Button button_send;
+
 
     @FXML
     private TextField tf_message;
@@ -52,6 +58,7 @@ public class Sub_ClientHandlerChat extends Thread {
         Chatting();
     }
 
+
     public void Chatting() {
         //Ghép chat vô đây
         try {
@@ -60,13 +67,13 @@ public class Sub_ClientHandlerChat extends Thread {
             while(true)
             {
                 clientSocket = server.accept();
+                System.out.println("accept");
                 DataOutputStream out = new DataOutputStream(clientSocket.getOutputStream());
                 DataInputStream in = new DataInputStream(clientSocket.getInputStream());
 //                BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in));
                 // Tạo một luồng để gửi tin nhắn
                 Thread senderThread = new Thread(() -> {
-                    while (true)
-                    {
+
                         button_send.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
@@ -84,9 +91,11 @@ public class Sub_ClientHandlerChat extends Thread {
                                 }
                             }
                         });
-                    }
+
+
 
                 });
+
 
                 Thread receiverThread = new Thread(() -> {
                     try {
@@ -111,6 +120,8 @@ public class Sub_ClientHandlerChat extends Thread {
                         e.printStackTrace();
                     }
                 });
+
+
 
 
                 senderThread.start();
@@ -147,3 +158,4 @@ public class Sub_ClientHandlerChat extends Thread {
     }
 
 }
+
