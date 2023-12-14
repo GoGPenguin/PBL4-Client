@@ -21,10 +21,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.*;
 
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +45,7 @@ public class ReceiveFile {
     private List<FileData> receivedFiles = new ArrayList<>();
     @FXML
     private VBox vBoxDownload;
+    @FXML
     private VBox vBoxSend;
 
 
@@ -66,80 +64,95 @@ public class ReceiveFile {
 
                 while (true) {
                     try {
-                        int fileNameLength = inputStream.readInt();
-                        byte[] fileNameBytes = new byte[fileNameLength];
-                        inputStream.readFully(fileNameBytes);
-                        String fileName = new String(fileNameBytes, "UTF-8");
-                        System.out.println(fileName);
-                        if (!"endofname".equals(fileName)) {
-                            Platform.runLater(() ->
-                                    {
-                                        addLabelReceive(fileName,vBoxDownload,receivedFiles);
-
-
-                                    }
-                            );
-                        }
-                        String mess = inputStream.readUTF();
-                        if ("endofname".equals(mess)) {
-                            isReceivingFile = true;
-                            fileData = new byte[0];
-                        }
-                        if (isReceivingFile) {
-                            long size = inputStream.readLong();
-                            byte[] buffer = new byte[1024];
-                            int bytesRead;
-
-
-                            while (size > 0 && (bytesRead = inputStream.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
-                                byte[] newFileData = new byte[fileData.length + bytesRead];
-                                System.arraycopy(fileData, 0, newFileData, 0, fileData.length);
-                                System.arraycopy(buffer, 0, newFileData, fileData.length, bytesRead);
-                                fileData = newFileData;
-                                size -= bytesRead;
-                            }
-                            System.out.println(fileData.length);
-                            if (size == 0) {
-                                FileData receivedFile = new FileData(fileName, fileData);
-                                receivedFiles.add(receivedFile);
-                                fileData = null;
-                            }
-                        }
-                        String interrupt = inputStream.readUTF();
-                        System.out.println(interrupt);
-                        if("Connect is closed by partner".equals(interrupt))
+                        if (socket.isClosed())
                         {
-                            clearViewTransfer();
+                            System.out.println("close socket");
                             showErrorAlert("Alert","Connect is closed by partner!");
+                            clearViewTransfer();
                             closeResources();
+                            break;
                         }
-                        btnFastDownload.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent actionEvent) {
-                                if(!receivedFiles.isEmpty())
-                                {
-                                    DirectoryChooser directoryChooser = new DirectoryChooser();
-                                    directoryChooser.setTitle("Chọn thư mục lưu trữ tệp");
-                                    File selectedDirectory = directoryChooser.showDialog(null);
+                            int fileNameLength = inputStream.readInt();
+                            byte[] fileNameBytes = new byte[fileNameLength];
+                            inputStream.readFully(fileNameBytes);
+                            String fileName = new String(fileNameBytes, "UTF-8");
+                            System.out.println(fileName);
+                            if (!"endofname".equals(fileName)) {
+                                Platform.runLater(() ->
+                                        {
+                                            addLabelReceive(fileName, vBoxDownload, receivedFiles);
 
 
-                                    if (selectedDirectory != null) {
-                                        for (FileData receivedFile : receivedFiles) {
-                                            String outputFileName = selectedDirectory.getAbsolutePath() + File.separator + receivedFile.getFileName();
-                                            try (FileOutputStream fileOutputStream = new FileOutputStream(outputFileName)) {
-                                                fileOutputStream.write(receivedFile.getData());
-                                                System.out.println("File " + receivedFile.getFileName() + " received and saved successfully.");
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
+                                        }
+                                );
+                            }
+                            String mess = inputStream.readUTF();
+                            if ("endofname".equals(mess)) {
+                                isReceivingFile = true;
+                                fileData = new byte[0];
+                            }
+                            if (isReceivingFile) {
+                                long size = inputStream.readLong();
+                                byte[] buffer = new byte[1024];
+                                int bytesRead;
+
+
+                                while (size > 0 && (bytesRead = inputStream.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
+                                    byte[] newFileData = new byte[fileData.length + bytesRead];
+                                    System.arraycopy(fileData, 0, newFileData, 0, fileData.length);
+                                    System.arraycopy(buffer, 0, newFileData, fileData.length, bytesRead);
+                                    fileData = newFileData;
+                                    size -= bytesRead;
+                                }
+                                System.out.println(fileData.length);
+                                if (size == 0) {
+                                    FileData receivedFile = new FileData(fileName, fileData);
+                                    receivedFiles.add(receivedFile);
+                                    fileData = null;
+                                }
+                            }
+//                        String interrupt = inputStream.readUTF();
+//                        System.out.println(interrupt);
+//                        if("Connect is closed by partner".equals(interrupt))
+//                        {
+//                            clearViewTransfer();
+//                            showErrorAlert("Alert","Connect is closed by partner!");
+//                            closeResources();
+//                        }
+                            btnFastDownload.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+                                    if (!receivedFiles.isEmpty()) {
+                                        DirectoryChooser directoryChooser = new DirectoryChooser();
+                                        directoryChooser.setTitle("Chọn thư mục lưu trữ tệp");
+                                        File selectedDirectory = directoryChooser.showDialog(null);
+
+
+                                        if (selectedDirectory != null) {
+                                            for (FileData receivedFile : receivedFiles) {
+                                                String outputFileName = selectedDirectory.getAbsolutePath() + File.separator + receivedFile.getFileName();
+                                                try (FileOutputStream fileOutputStream = new FileOutputStream(outputFileName)) {
+                                                    fileOutputStream.write(receivedFile.getData());
+                                                    System.out.println("File " + receivedFile.getFileName() + " received and saved successfully.");
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
                                             }
                                         }
                                     }
                                 }
-                            }
-                        });
+                            });
 
 
-                    } catch (IOException e) {
+                    }
+                    catch (EOFException e) {
+                        System.out.println("close socket");
+                        showErrorAlert("Alert","Connect is closed by partner!");
+                        clearViewTransfer();
+                        closeResources();
+                        break;
+                    }
+                    catch (IOException e) {
                         e.printStackTrace();
                         break;
                     }

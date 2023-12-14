@@ -222,13 +222,15 @@ public class TransferFileController implements Initializable {
     }
     @FXML
     void handleClickCloseConnect(MouseEvent event) throws IOException {
-        String message = "Connect is closed by partner";
-        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-        dataOutputStream.writeUTF(message);
-        clearViewTransfer();
-        outputStream.close();
-        inputStream.close();
-        socket.close();
+        if (socket != null && !socket.isClosed()) {
+//            String message = "Connect is closed by partner";
+//            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+//            dataOutputStream.writeUTF(message);
+            clearViewTransfer();
+            outputStream.close();
+            inputStream.close();
+            socket.close();
+        }
     }
 
 
