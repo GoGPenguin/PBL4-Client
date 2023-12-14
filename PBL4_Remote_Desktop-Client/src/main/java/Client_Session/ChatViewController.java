@@ -213,7 +213,7 @@ public class ChatViewController implements Initializable {
                         message = dataInputStream.readUTF();
                         if(message.equals("Connect is closed by partner"))
                         {
-                            dataInputStream.close();
+                            dataOutputStream.close();
                             dataInputStream.close();
                             socket.close();
                             clearChatView();
@@ -240,7 +240,7 @@ public class ChatViewController implements Initializable {
         dataOutputStream.writeUTF("Connect is closed by partner");
         dataOutputStream.flush();
         clearChatView();
-        dataInputStream.close();
+        dataOutputStream.close();
         dataInputStream.close();
         socket.close();
     }
