@@ -6,14 +6,16 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
-import javafx.stage.DirectoryChooser;
-import javafx.stage.Window;
+import javafx.stage.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -37,10 +39,11 @@ public class ReceiveFile {
     private List<FileData> receivedFiles = new ArrayList<>();
     @FXML
     private VBox vBoxDownload;
+    private VBox vBoxSend;
 
 
 
-    public ReceiveFile(Socket socket, TextArea taYourPartner, Button btnFastDownload,VBox vBoxDownload) {
+    public ReceiveFile(Socket socket, TextArea taYourPartner, Button btnFastDownload,VBox vBoxDownload,VBox vBoxSend) {
         Thread receiverThread = new Thread(() -> {
             try {
                 this.socket = socket;
@@ -48,6 +51,7 @@ public class ReceiveFile {
                 this.taYourPartner = taYourPartner;
                 this.btnFastDownload = btnFastDownload;
                 this.vBoxDownload = vBoxDownload;
+                this.vBoxSend = vBoxSend;
                 boolean isReceivingFile = false;
 
                 while (true) {
@@ -88,6 +92,14 @@ public class ReceiveFile {
                                 receivedFiles.add(receivedFile);
                                 fileData = null;
                             }
+                        }
+                        String interrupt = inputStream.readUTF();
+                        System.out.println(interrupt);
+                        if("Connect is closed by partner".equals(interrupt))
+                        {
+                            clearViewTransfer();
+                            showErrorAlert("Alert","Connect is closed by partner!");
+                            closeResources();
                         }
                         btnFastDownload.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
@@ -172,6 +184,45 @@ public class ReceiveFile {
                 }
             });
         });
+    }
+
+    private void clearViewTransfer() {
+        Platform.runLater(() -> {
+            vBoxSend.getChildren().clear();
+            vBoxDownload.getChildren().clear();
+        });
+    }
+    private void showErrorAlert(String title, String header) {
+        Platform.runLater(() -> {
+            Stage dialogStage = new Stage();
+            dialogStage.initStyle(StageStyle.UTILITY);
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+
+            Label label = new Label(header);
+            label.setWrapText(true);
+
+            StackPane root = new StackPane();
+            root.getChildren().add(label);
+
+            Scene scene = new Scene(root, 300, 100);
+
+            dialogStage.setTitle(title);
+            dialogStage.setScene(scene);
+
+            dialogStage.showAndWait();
+        });
+    }
+    private void closeResources() {
+        try {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

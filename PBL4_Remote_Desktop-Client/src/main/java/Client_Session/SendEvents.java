@@ -1,6 +1,7 @@
 package Client_Session;
 
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
@@ -14,18 +15,20 @@ public class SendEvents {
     private Socket socketClient = null;
     private BorderPane cPane = null;
     private PrintWriter writer = null;
+    private ImageView imageView;
     String width = "";
     String height = "";
     double w;
     double h;
 
-    public SendEvents(Socket s, BorderPane p, String width, String height, Scene scene) {
+    public SendEvents(Socket s, BorderPane p, String width, String height, Scene scene, ImageView imageView) {
         this.socketClient = s;
         this.cPane = p;
         this.width = width;
         this.height = height;
-        this.w = Double.valueOf(width.trim()).doubleValue();
-        this.h = Double.valueOf(height.trim()).doubleValue();
+        this.imageView = imageView;
+        this.w = Double.parseDouble(width);
+        this.h = Double.parseDouble(height);
         this.scene = scene;
         try {
             writer = new PrintWriter(socketClient.getOutputStream());

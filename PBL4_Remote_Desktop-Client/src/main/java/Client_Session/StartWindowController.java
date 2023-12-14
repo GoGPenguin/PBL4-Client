@@ -21,76 +21,27 @@ import java.util.ResourceBundle;
 
 
 public class StartWindowController implements Initializable {
-
-
     private Socket clientSocket;
-
-
     private DataInputStream in;
-
-
     private DataOutputStream out;
-
-
     private Sub_Server sub_server = null;
-
-
     private RemoteDesktop controller = null ;
-
-
     private ChatViewController controllerChat = null ;
     private TransferFileController controllerFile = null ;
-
-
     private Node content;
-
-
     private FXMLLoader loader;
-
-
-    private FXMLLoader remoteLoader = new FXMLLoader(getClass().getResource("RemoteDesktop.fxml"));
-
-
     private Node remoteContent;
-
-
-    {
-        try {
-            remoteContent = remoteLoader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    private FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("Chat.fxml"));
-
-
     private Node chatContent;
-
-
-    {
-        try {
-            chatContent = chatLoader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
+    private Node fileContent;
+    private FXMLLoader remoteLoader = new FXMLLoader(getClass().getResource("RemoteDesktop.fxml"));
+    private FXMLLoader chatLoader = new FXMLLoader(getClass().getResource("Chat.fxml"));
     private FXMLLoader fileLoader = new FXMLLoader(getClass().getResource("TransferFile.fxml"));
 
 
-    private Node fileContent;
 
 
-    {
-        try {
-            fileContent = fileLoader.load();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+
+
 
 
     public StackPane contentArea;
@@ -106,8 +57,13 @@ public class StartWindowController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
+        try {
+            remoteContent = remoteLoader.load();
+            chatContent = chatLoader.load();
+            fileContent = fileLoader.load();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -181,6 +137,4 @@ public class StartWindowController implements Initializable {
 
     }
 }
-
-
 

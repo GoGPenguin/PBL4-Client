@@ -17,15 +17,20 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -74,7 +79,7 @@ public class ChatViewController implements Initializable {
     private TextField tf_message;
     @FXML
     private VBox vbox_messages;
-    private Socket socket;
+    private Socket socket = null;
     private DataInputStream dataInputStream;
     private DataOutputStream dataOutputStream;
 
@@ -82,6 +87,8 @@ public class ChatViewController implements Initializable {
     private Thread senderThread;
     private Thread receiverThread;
     private static boolean subClientHandlerChatCreated = false;
+    @FXML
+    private Button btnCloseConnect;
 
     public static void addLabelSend(String msgFromServer,VBox vBox)
     {
@@ -150,26 +157,8 @@ public class ChatViewController implements Initializable {
     public void setValue()
     {
         try {
-
-
             String ipAddress = InetAddress.getLocalHost().getHostAddress();
-
-
             tfYourID.setText(ipAddress);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
@@ -182,9 +171,7 @@ public class ChatViewController implements Initializable {
     }
 
     @FXML
-    void onClickConnect(MouseEvent event) {
-
-
+    void onClickConnect(MouseEvent event) throws IOException {
         String partnerID = tfPartnerID.getText();
         try {
             socket = new Socket(partnerID,9999);
@@ -223,6 +210,14 @@ public class ChatViewController implements Initializable {
                     String message;
                     while (true) {
                         message = dataInputStream.readUTF();
+                        if(message.equals("Connect is closed by partner"))
+                        {
+                            dataOutputStream.close();
+                            dataInputStream.close();
+                            socket.close();
+                            clearChatView();
+                            showErrorAlert("Alert","Connect is closed by partner!");
+                        }
                         addLabelReceive(message,vbox_messages);
                         System.out.println(message);
                     }
@@ -230,21 +225,45 @@ public class ChatViewController implements Initializable {
                     e.printStackTrace();
                 }
             });
-
-
             senderThread.start();
             receiverThread.start();
 
             clearChatView();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+            showErrorAlert("Error", "Địa chỉ IP không chính xác. Vui lòng nhập lại!");
         }
     }
+    @FXML
+    void onClickCloseConnect(MouseEvent event) throws IOException {
+            dataOutputStream.writeUTF("Connect is closed by partner");
+            clearChatView();
+            dataOutputStream.close();
+            dataInputStream.close();
+            socket.close();
+    }
+    private void showErrorAlert(String title, String header) {
+        Stage dialogStage = new Stage();
+        dialogStage.initStyle(StageStyle.UTILITY);
+        dialogStage.initModality(Modality.APPLICATION_MODAL);
 
+        Label label = new Label(header);
+        label.setWrapText(true);
+
+        StackPane root = new StackPane();
+        root.getChildren().add(label);
+
+        Scene scene = new Scene(root, 300, 100);
+
+        dialogStage.setTitle(title);
+        dialogStage.setScene(scene);
+
+        dialogStage.showAndWait();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-//        new Sub_ClientHandlerChat(this,vbox_messages,button_send,tf_message).start();
+        new Sub_ClientHandlerChat(this,vbox_messages,button_send,tf_message).start();
         if (!subClientHandlerChatCreated) {
             new Sub_ClientHandlerChat(this, vbox_messages, button_send, tf_message).start();
             subClientHandlerChatCreated = true;

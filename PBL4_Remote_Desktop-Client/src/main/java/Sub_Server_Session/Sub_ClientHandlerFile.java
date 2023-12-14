@@ -2,12 +2,19 @@ package Sub_Server_Session;
 
 
 import Client_Session.TransferFileController;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -70,8 +77,6 @@ public class Sub_ClientHandlerFile extends Thread {
             {
                 clientSocket = server.accept();
                 System.out.println("Cho truyen file rồi");
-
-                // Tạo một luồng để gửi tin nhắn
                 Thread senderThread = new Thread(() -> {
                     btnOpenFile.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
@@ -83,7 +88,7 @@ public class Sub_ClientHandlerFile extends Thread {
                 });
 
                 Thread receiverThread = new Thread(() -> {
-                        new ReceiveFile(clientSocket,taYourPartner,btnFastDownload,vBoxDownload);
+                        new ReceiveFile(clientSocket,taYourPartner,btnFastDownload,vBoxDownload,vBoxSend);
 
                 });
 
@@ -105,7 +110,9 @@ public class Sub_ClientHandlerFile extends Thread {
             }
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+//            throw new RuntimeException(e);
+            System.out.println(e);
         }
     }
+
 }

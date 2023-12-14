@@ -20,8 +20,8 @@ public class Sub_ClientHandler extends Thread{
 
 
 
-    private double clientWidthCm = dim.getWidth();
-    private double clientHeightCm = dim.getHeight();
+    private String clientWidthCm = Double.toString(dim.getWidth());
+    private String clientHeightCm = Double.toString(dim.getHeight());
 
 
 
@@ -68,9 +68,9 @@ public class Sub_ClientHandler extends Thread{
         DataOutputStream out = null;
         try {
             out = new DataOutputStream(clientSocket.getOutputStream());
-            out.writeUTF(String.valueOf(clientWidthCm));
+            out.writeUTF(clientWidthCm);
             out.flush();
-            out.writeUTF(String.valueOf(clientHeightCm));
+            out.writeUTF(clientHeightCm);
             out.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
