@@ -142,8 +142,6 @@ public class ReceiveFile {
                                     }
                                 }
                             });
-
-
                     }
                     catch (EOFException e) {
                         System.out.println("close socket");
@@ -157,8 +155,6 @@ public class ReceiveFile {
                         break;
                     }
                 }
-
-
             } catch (IOException e) {
                 e.printStackTrace();
             }finally {

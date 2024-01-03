@@ -204,8 +204,6 @@ public class ChatViewController implements Initializable {
                     }
                 });
             });
-
-
             receiverThread = new Thread(() -> {
                 try {
                     String message;
@@ -219,8 +217,10 @@ public class ChatViewController implements Initializable {
                             clearChatView();
                             showErrorAlert("Alert","Connect is closed by partner!");
                         }
-                        addLabelReceive(message,vbox_messages);
-                        System.out.println(message);
+                        else {
+                            addLabelReceive(message,vbox_messages);
+                            System.out.println(message);
+                        }
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -231,7 +231,6 @@ public class ChatViewController implements Initializable {
 
             clearChatView();
         } catch (IOException e) {
-//            throw new RuntimeException(e);
             showErrorAlert("Error", "Địa chỉ IP không chính xác. Vui lòng nhập lại!");
         }
     }
@@ -245,27 +244,24 @@ public class ChatViewController implements Initializable {
         socket.close();
     }
     private void showErrorAlert(String title, String header) {
-        Stage dialogStage = new Stage();
-        dialogStage.initStyle(StageStyle.UTILITY);
-        dialogStage.initModality(Modality.APPLICATION_MODAL);
+        Platform.runLater(() -> {
+            Stage dialogStage = new Stage();
+            dialogStage.initStyle(StageStyle.UTILITY);
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
 
+            Label label = new Label(header);
+            label.setWrapText(true);
 
-        Label label = new Label(header);
-        label.setWrapText(true);
+            StackPane root = new StackPane();
+            root.getChildren().add(label);
 
+            Scene scene = new Scene(root, 300, 100);
 
-        StackPane root = new StackPane();
-        root.getChildren().add(label);
+            dialogStage.setTitle(title);
+            dialogStage.setScene(scene);
 
-
-        Scene scene = new Scene(root, 300, 100);
-
-
-        dialogStage.setTitle(title);
-        dialogStage.setScene(scene);
-
-
-        dialogStage.showAndWait();
+            dialogStage.showAndWait();
+        });
     }
 
 

@@ -62,14 +62,9 @@ public class SendFile {
 
 
                     System.out.println("Send file successfully");
-
-                    //bug ở đây nếu dùng outputStream.close() thì lỗi socket closed. Nếu ko dùng thì máy bên kia bị not response. Nguyên nhân là đóng outputStream thì sẽ đóng lun socket. Mà ko đóng thì
-//                    outputStream.close();
-//                outputStream.flush();
                     fileInputStream.close();
 
                     Platform.runLater(() -> {
-//                        taYourFile.appendText(selectedFile.getName() + "\n");
                         addLabelSend(selectedFile.getName(),vBoxSend);});
                 }
             } catch (IOException e) {

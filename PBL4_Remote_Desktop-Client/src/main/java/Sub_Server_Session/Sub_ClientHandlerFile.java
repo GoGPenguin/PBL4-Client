@@ -64,18 +64,21 @@ public class Sub_ClientHandlerFile extends Thread {
     @FXML
     private VBox vBoxSend;
 
+    @FXML
+    private Button btnCloseConnect;
 
-    public Sub_ClientHandlerFile(TransferFileController transferFileController, TextArea taYourPartner,Button btnFastDownload,Button btnOpenFile,TextArea taYourFile,Button btnOpenFolder,VBox vBoxDownload,VBox vBoxSend) {
+
+    public Sub_ClientHandlerFile(TransferFileController transferFileController, TextArea taYourPartner,Button btnFastDownload,Button btnOpenFile,TextArea taYourFile,Button btnOpenFolder,VBox vBoxDownload,VBox vBoxSend,Button btnCloseConnect) {
         this.transferFileController = transferFileController;
         this.taYourPartner = taYourPartner;
         this.btnFastDownload = btnFastDownload;
         this.btnOpenFile = btnOpenFile;
         this.taYourFile = taYourFile;
-
-
         this.btnOpenFolder = btnOpenFolder;
         this.vBoxDownload = vBoxDownload;
-        this.vBoxSend = vBoxSend;}
+        this.vBoxSend = vBoxSend;
+        this.btnCloseConnect = btnCloseConnect;
+    }
     @Override
     public void run() {
         File_Transfer();
@@ -102,6 +105,17 @@ public class Sub_ClientHandlerFile extends Thread {
                         @Override
                         public void handle(ActionEvent actionEvent) {
                             new SendFile(clientSocket,btnOpenFile,taYourFile,vBoxSend);
+                        }
+                    });
+                    btnCloseConnect.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            try {
+                                clearViewTransfer();
+                                clientSocket.close();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
 
@@ -141,6 +155,12 @@ public class Sub_ClientHandlerFile extends Thread {
 //            throw new RuntimeException(e);
             System.out.println(e);
         }
+    }
+    private void clearViewTransfer() {
+        Platform.runLater(() -> {
+            vBoxSend.getChildren().clear();
+            vBoxDownload.getChildren().clear();
+        });
     }
 
 }

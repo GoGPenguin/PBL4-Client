@@ -27,30 +27,30 @@ public class StartWindow extends Application {
         int maxAttempts = 10; // Maximum number of connection attempts
 
         // test
-        boolean connected = true;
+        boolean connected = false;
         Socket client = null;
         DataInputStream in = null;
         DataOutputStream out = null;
 
         // Attempt to connect to the server with retries
-//        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
-//            try {
-//                client = new Socket(ip, port);
-//                System.out.println("Connected...");
-//                in = new DataInputStream(client.getInputStream());
-//                out = new DataOutputStream(client.getOutputStream());
-//                out.writeUTF(InetAddress.getLocalHost().getHostAddress());
-//                connected = true;
-//                break; // Connection successful, exit the loop
-//            } catch (IOException e) {
-//                System.out.println("Connection attempt " + attempt + " failed. Retrying...");
-//                try {
-//                    Thread.sleep(1000); // Wait for 1 second before retrying
-//                } catch (InterruptedException ex) {
-//                    ex.printStackTrace();
-//                }
-//            }
-//        }
+        for (int attempt = 1; attempt <= maxAttempts; attempt++) {
+            try {
+                client = new Socket(ip, port);
+                System.out.println("Connected...");
+                in = new DataInputStream(client.getInputStream());
+                out = new DataOutputStream(client.getOutputStream());
+                out.writeUTF(InetAddress.getLocalHost().getHostAddress());
+                connected = true;
+                break; // Connection successful, exit the loop
+            } catch (IOException e) {
+                System.out.println("Connection attempt " + attempt + " failed. Retrying...");
+                try {
+                    Thread.sleep(1000); // Wait for 1 second before retrying
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
 
         if (connected) {
             FXMLLoader fxmlLoader = new FXMLLoader(StartWindow.class.getResource("StartWindow.fxml"));
