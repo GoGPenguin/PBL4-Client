@@ -14,6 +14,7 @@ import java.net.Socket;
 
 public class RemoteWindow extends Thread{
     private Scene scene;
+
     @FXML
     private BorderPane borderPane;
     @FXML
@@ -53,10 +54,8 @@ public class RemoteWindow extends Thread{
             DataInputStream initSize = new DataInputStream(socket.getInputStream());
             width = initSize.readUTF();
             height = initSize.readUTF();
-//            borderPane.setMinWidth(Double.parseDouble(width));
-//            borderPane.setMaxWidth(Double.parseDouble(width));
-//            borderPane.setMinHeight(Double.parseDouble(height));
-//            borderPane.setMaxHeight(Double.parseDouble(height));
+            remoteStage.setWidth(Double.parseDouble(width));
+            remoteStage.setHeight(Double.parseDouble(height));
         } catch (IOException e) {
             try {
                 socket.close();
