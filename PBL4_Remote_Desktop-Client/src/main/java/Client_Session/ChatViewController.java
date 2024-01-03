@@ -267,9 +267,9 @@ public class ChatViewController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        new Sub_ClientHandlerChat(this,vbox_messages,button_send,tf_message).start();
+        new Sub_ClientHandlerChat(this,vbox_messages,button_send,tf_message,btnCloseConnect).start();
         if (!subClientHandlerChatCreated) {
-            new Sub_ClientHandlerChat(this, vbox_messages, button_send, tf_message).start();
+            new Sub_ClientHandlerChat(this, vbox_messages, button_send, tf_message,btnCloseConnect).start();
             subClientHandlerChatCreated = true;
         }
     }

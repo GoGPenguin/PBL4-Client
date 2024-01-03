@@ -42,15 +42,19 @@ public class Sub_ClientHandlerChat extends Thread {
     @FXML
     private TextField tf_message;
 
+    @FXML
+    private Button btnCloseConnect;
 
 
 
 
-    public Sub_ClientHandlerChat(ChatViewController chatViewController,VBox vbox_message,Button button_send,TextField tf_message) {
+
+    public Sub_ClientHandlerChat(ChatViewController chatViewController,VBox vbox_message,Button button_send,TextField tf_message,Button btnCloseConnect) {
         this.chatViewController = chatViewController;
         this.vbox_message = vbox_message;
         this.button_send = button_send;
         this.tf_message = tf_message;
+        this.btnCloseConnect = btnCloseConnect;
 
     }
     @Override
@@ -91,6 +95,24 @@ public class Sub_ClientHandlerChat extends Thread {
                                 }
                             }
                         });
+                    btnCloseConnect.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent actionEvent) {
+                            try{
+                                String message = "Connect is closed by partner";
+                                out.writeUTF(message);
+                                out.flush();
+                                clearChatView();
+                                out.close();
+                                in.close();
+                                clientSocket.close();
+                            }
+                            catch (IOException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
 
 
 
